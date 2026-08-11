@@ -42,9 +42,4 @@ app.get("/health", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
 
-//404 Route
-app.use("/*", (req, res, next) => {
-  res.status(404).json({ message: "Route not found" });
-});
-
 module.exports = app;
