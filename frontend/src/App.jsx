@@ -7,6 +7,11 @@ import Home from "./pages/home";
 import Skills from "./pages/skills";
 import Opportunities from "./pages/opportunities";
 import ProtectedRoute from "./components/ProtectedRoute";
+import SkillForm from "./components/SkillForm";
+import OpportunityForm from "./components/OpportunityForm";
+
+import SavedOpportunity from "./components/SavedOpportunity";
+
 
 const App = () => {
   return (
@@ -36,6 +41,12 @@ const App = () => {
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
+
+        <Route path="/skillform" element={<SkillForm />} />
+              <Route path="/opportunities" element={<OpportunityForm />} />
+              <Route path="/saved-opportunities" element={<SavedOpportunity />} />
+
+
       </Routes>
     </>
   );
