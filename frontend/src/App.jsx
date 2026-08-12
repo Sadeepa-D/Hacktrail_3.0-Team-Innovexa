@@ -10,7 +10,6 @@ import PostSkillPage from "./pages/PostSkillPage";
 import PostOpportunityPage from "./pages/PostOpportunityPage";
 import Profile from "./pages/profile";
 import UserProfilePage from "./pages/UserProfilePage";
-import AdminDashboard from "./pages/admindashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -43,8 +42,6 @@ const App = () => {
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/post-skill" element={<ProtectedRoute><PostSkillPage /></ProtectedRoute>} />
         <Route path="/post-opportunity" element={<ProtectedRoute><PostOpportunityPage /></ProtectedRoute>} />
-        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
 
         {/* Fallback & default redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />
