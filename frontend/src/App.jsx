@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Login from "./pages/login";
+import Skills from "./pages/skills";
+
 import Register from "./pages/register";
 import Home from "./pages/home";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -24,6 +26,7 @@ const App = () => {
       <Routes>
         {/* Public routes */}
         <Route path="/login" element={<Login />} />
+        <Route path="/skills" element={<Skills />} />
         <Route path="/register" element={<Register />} />
 
         {/* Protected routes */}
