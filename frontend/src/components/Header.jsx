@@ -9,25 +9,37 @@ const Header = () => {
         <div className="flex items-center justify-between h-24">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 flex items-center group">
-            <img 
-              src={logoImage} 
-              alt="SKILLORA Logo" 
-              className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md" 
+            <img
+              src={logoImage}
+              alt="SKILLORA Logo"
+              className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md"
             />
           </Link>
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-sm font-medium text-white hover:text-violet-400 transition-colors">
+            <Link
+              to="/"
+              className="text-sm font-medium text-white hover:text-violet-400 transition-colors"
+            >
               Home
             </Link>
-            <Link to="/skills" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
+            <Link
+              to="/skills"
+              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
+            >
               Skill Feeds
             </Link>
-            <Link to="/opportunities" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
+            <Link
+              to="/opportunities"
+              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
+            >
               Opportunities
             </Link>
-            <Link to="/contacts" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
+            <Link
+              to="/contacts"
+              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
+            >
               Contacts
             </Link>
           </nav>

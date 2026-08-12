@@ -6,12 +6,9 @@ import Register from "./pages/register";
 import Home from "./pages/home";
 import Skills from "./pages/skills";
 import Opportunities from "./pages/opportunities";
+import PostSkillPage from "./pages/PostSkillPage";
+import PostOpportunityPage from "./pages/PostOpportunityPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import SkillForm from "./components/SkillForm";
-import OpportunityForm from "./components/OpportunityForm";
-
-import SavedOpportunity from "./components/SavedOpportunity";
-
 
 const App = () => {
   return (
@@ -29,24 +26,22 @@ const App = () => {
         }}
       />
       <Routes>
-        {/* Public routes */}
+        {/* Public auth routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Protected routes */}
+        {/* Main pages */}
         <Route path="/home" element={<Home />} />
         <Route path="/skills" element={<Skills />} />
         <Route path="/opportunities" element={<Opportunities />} />
 
-        {/* Default redirect */}
+        {/* User management routes (Protected) */}
+        <Route path="/post-skill" element={<PostSkillPage />} />
+        <Route path="/post-opportunity" element={<PostOpportunityPage />} />
+
+        {/* Fallback & default redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
-
-        <Route path="/skillform" element={<SkillForm />} />
-              <Route path="/opportunities" element={<OpportunityForm />} />
-              <Route path="/saved-opportunities" element={<SavedOpportunity />} />
-
-
       </Routes>
     </>
   );
