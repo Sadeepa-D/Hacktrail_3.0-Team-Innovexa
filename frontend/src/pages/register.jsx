@@ -2,15 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import {
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  UserPlus,
-  Loader2,
-  Sparkles,
-  CheckCircle2,
-  User,
+  Mail, Lock, Eye, EyeOff, UserPlus, Loader2,
+  Sparkles, CheckCircle2, User,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -68,10 +61,7 @@ const Register = () => {
       toast.success("Account created! Welcome to Team Innovexa 🎉");
       navigate("/home", { replace: true });
     } catch (error) {
-      console.error("Registration error:", error);
-      toast.error(
-        error.message || "Failed to create account. Please try again.",
-      );
+      toast.error(error.message || "Registration failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
