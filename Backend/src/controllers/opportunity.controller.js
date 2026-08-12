@@ -93,12 +93,8 @@ const opportunityController = {
       const data = {
         title: title.trim(),
         userId: req.user.id,
+        status: status ? status.toUpperCase() : "DRAFT",
       };
-
-      if (description) data.description = description.trim();
-      if (type) data.type = type.toUpperCase();
-      if (category) data.category = category.toUpperCase();
-      if (status) data.status = status.toUpperCase();
       if (location) data.location = location.trim();
       if (isRemote !== undefined) data.isRemote = Boolean(isRemote);
       if (salary) data.salary = parseFloat(salary);
