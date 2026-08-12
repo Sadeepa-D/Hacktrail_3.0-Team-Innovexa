@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, ArrowRight, ChevronRight, ChevronLeft } from "lucide-react";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const slides = [
@@ -147,6 +148,9 @@ const Home = () => {
           
         </div>
       </main>
+
+      {/* Footer Component */}
+      <Footer />
     </div>
   );
 };
