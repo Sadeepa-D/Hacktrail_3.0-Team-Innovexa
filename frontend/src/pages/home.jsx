@@ -61,7 +61,6 @@ const Home = () => {
           {/* Left Column: Text & CTAs */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
             
-            
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
               Turn Your Skills <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">
