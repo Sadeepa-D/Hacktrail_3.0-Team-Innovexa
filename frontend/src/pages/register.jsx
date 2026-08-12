@@ -61,7 +61,10 @@ const Register = () => {
       toast.success("Account created! Welcome to Team Innovexa 🎉");
       navigate("/home", { replace: true });
     } catch (error) {
-      toast.error(error.message || "Registration failed. Please try again.");
+      console.error("Registration error:", error);
+      toast.error(
+        error.message || "Failed to create account. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
