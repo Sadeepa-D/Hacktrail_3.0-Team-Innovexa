@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import {
@@ -16,15 +16,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, user } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
-
-  // Redirect already-authenticated users
-  useEffect(() => {
-    if (user) {
-      navigate("/home", { replace: true });
-    }
-  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,7 +51,7 @@ const Register = () => {
         fname.trim() || undefined,
         lname.trim() || undefined
       );
-      toast.success("Account created! Welcome to Team Innovexa 🎉");
+      toast.success("Account created! Welcome 🎉");
       navigate("/home", { replace: true });
     } catch (error) {
       console.error("Registration error:", error);
