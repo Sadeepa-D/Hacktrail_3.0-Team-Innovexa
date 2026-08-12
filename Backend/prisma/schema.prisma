@@ -1,12 +1,296 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// ===========================
+// USER MODEL
+// ===========================
+
+model User {
+  id               String            @id @default(uuid())
+  email            String            @unique
+  password         String
+  fname            String?
+  lname            String?
+  dob              DateTime?
+  phone            String?
+  gender           String?
+  city             String?
+  avatarUrl        String?
+  resetToken       String?
+  resetTokenExpire DateTime?
+  role             Role              @default(USER)
+  isactive         ActiveStatus      @default(ACTIVE)
+  
+  // Relations (NEW)
+  opportunities    Opportunity[]     @relation("UserOpportunities")
+  skills           Skill[]           @relation("UserSkills")
+  applications     Application[]     @relation("UserApplications")
+  savedOpportunities SavedOpportunity[]
+  
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  
+  @@index([email])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum ActiveStatus {
+  ACTIVE
+  DEACTIVE
+  DELETED
+  SUSPENDED
+}
+
+// ===========================
+// OPPORTUNITY MODEL
+// ===========================
+
+enum OpportunityType {
+  JOB
+  INTERNSHIP
+  FREELANCE
+  PART_TIME
+  FULL_TIME
+  VOLUNTEER
+  PROJECT
+}
+
+enum OpportunityCategory {
+  TECHNOLOGY
+  DESIGN
+  MARKETING
+  WRITING
+  TUTORING
+  LABOR
+  FOOD_SERVICE
+  EVENT
+  AGRICULTURE
+  OTHER
+}
+
+enum OpportunityStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  FILLED
+  EXPIRED
+  CANCELLED
+}
+
+enum SalaryType {
+  FIXED
+  HOURLY
+  MONTHLY
+  NEGOTIABLE
+}
+
+model Opportunity {
+  id          String              @id @default(uuid())
+  title       String
+  description String?             @db.Text
+  
+  // Type & Category
+  type        OpportunityType     @default(JOB)
+  category    OpportunityCategory @default(OTHER)
+  status      OpportunityStatus   @default(DRAFT)
+  
+  // Location & Work
+  location    String?
+  isRemote    Boolean             @default(false)
+  
+  // Compensation
+  salary      Float?
+  salaryMax   Float?
+  salaryType  SalaryType          @default(FIXED)
+  
+  // Company/Employer
+  companyname  String?
+  contactEmail String?
+  contactPhone String?
+  
+  // Requirements
+  experience  String?
+  education   String?
+  
+  // User who posted this opportunity (NEW)
+  userId      String
+  user        User                @relation("UserOpportunities", fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Relations (NEW)
+  applications Application[]      @relation("OpportunityApplications")
+  savedBy      SavedOpportunity[]
+  
+  // Engagement metrics (NEW)
+  viewCount        Int             @default(0)
+  applicationCount Int             @default(0)
+  
+  // Admin Features
+  isVerified  Boolean             @default(false)
+  isFeatured  Boolean             @default(false)
+  
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  publishedAt DateTime?
+  expiresAt   DateTime?
+  
+  @@index([userId])
+  @@index([status])
+  @@index([category])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// ===========================
+// SKILL MODEL
+// ===========================
+
+enum SkillCategory {
+  TECHNICAL
+  DESIGN
+  COMMUNICATION
+  MANAGEMENT
+  LANGUAGE
+  SOFT_SKILL
+  OTHER
+}
+
+model Skill {
+  id            String        @id @default(uuid())
+  name          String
+  phonenum      String
+  email         String?
+  category      SkillCategory @default(OTHER)
+  description   String?       @db.Text
+  qualification String?
+  
+  // User who posted this skill (NEW)
+  userId        String
+  user          User          @relation("UserSkills", fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Additional fields (NEW)
+  hourlyRate    Float?        // If offering skill as service
+  availability  String?       // "Weekends", "Full-time", etc.
+  experience    String?       // Years of experience
+  isVerified    Boolean       @default(false)
+  isActive      Boolean       @default(true)
+  
+  // Engagement (NEW)
+  viewCount     Int           @default(0)
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  @@index([userId])
+  @@index([category])
+  @@index([name])
+}
+
+// ===========================
+// APPLICATION MODEL (NEW)
+// ===========================
+
+enum ApplicationStatus {
+  PENDING
+  REVIEWING
+  SHORTLISTED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+model Application {
+  id            String            @id @default(uuid())
+  
+  // Relations
+  opportunityId String
+  opportunity   Opportunity       @relation("OpportunityApplications", fields: [opportunityId], references: [id], onDelete: Cascade)
+  
+  applicantId   String
+  applicant     User              @relation("UserApplications", fields: [applicantId], references: [id], onDelete: Cascade)
+  
+  // Application Details
+  coverLetter   String?           @db.Text
+  resume        String?           // URL to resume file
+  portfolio     String?           // Portfolio link
+  phoneNumber   String?
+  email         String?
+  expectedSalary Float?
+  
+  // Status
+  status        ApplicationStatus @default(PENDING)
+  
+  // Notes
+  applicantNotes String?          @db.Text  // Notes from applicant
+  employerNotes  String?          @db.Text  // Notes from employer
+  
+  // Timestamps
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  reviewedAt    DateTime?
+  
+  @@unique([opportunityId, applicantId]) // Prevent duplicate applications
+  @@index([applicantId])
+  @@index([opportunityId])
+  @@index([status])
+}
+
+// ===========================
+// SAVED OPPORTUNITY MODEL (NEW)
+// ===========================
+
+model SavedOpportunity {
+  id            String      @id @default(uuid())
+  
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  opportunityId String
+  opportunity   Opportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  
+  notes         String?     @db.Text
+  
+  createdAt     DateTime    @default(now())
+  
+  @@unique([userId, opportunityId])
+  @@index([userId])
+}
+
+// ===========================
+// NOTIFICATION MODEL (Optional but Recommended)
+// ===========================
+
+enum NotificationType {
+  NEW_OPPORTUNITY
+  APPLICATION_RECEIVED
+  APPLICATION_STATUS_CHANGED
+  SKILL_INQUIRY
+  SYSTEM
+}
+
+model Notification {
+  id        String           @id @default(uuid())
+  
+  userId    String
+  type      NotificationType
+  title     String
+  message   String           @db.Text
+  link      String?
+  
+  isRead    Boolean          @default(false)
+  
+  createdAt DateTime         @default(now())
+  
+  @@index([userId, isRead])
 }

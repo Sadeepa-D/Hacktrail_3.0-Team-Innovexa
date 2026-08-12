@@ -10,6 +10,7 @@ import {
   Loader2,
   Sparkles,
   CheckCircle2,
+  User,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
