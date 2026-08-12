@@ -1,6 +1,10 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import Login from "./pages/login";
+import Register from "./pages/register";
+import Home from "./pages/home";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -9,21 +13,32 @@ const App = () => {
         position="top-right"
         toastOptions={{
           style: {
-            fontSize: "16px",
+            background: "#0f172a",
+            color: "#f8fafc",
+            border: "1px solid #334155",
+            borderRadius: "0.75rem",
+            fontSize: "14px",
           },
         }}
       />
       <Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Protected routes */}
         <Route
-          path="/"
+          path="/home"
           element={
-            <div>
-              <h1 className="text-4xl font-bold text-blue-600">
-                HackTrail 3.0
-              </h1>
-            </div>
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
           }
         />
+
+        {/* Default redirect */}
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
     </>
   );
