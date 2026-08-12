@@ -8,6 +8,7 @@ import Skills from "./pages/skills";
 import Opportunities from "./pages/opportunities";
 import PostSkillPage from "./pages/PostSkillPage";
 import PostOpportunityPage from "./pages/PostOpportunityPage";
+import Profile from "./pages/profile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
@@ -36,8 +37,9 @@ const App = () => {
         <Route path="/opportunities" element={<Opportunities />} />
 
         {/* User management routes (Protected) */}
-        <Route path="/post-skill" element={<PostSkillPage />} />
-        <Route path="/post-opportunity" element={<PostOpportunityPage />} />
+        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route path="/post-skill" element={<ProtectedRoute><PostSkillPage /></ProtectedRoute>} />
+        <Route path="/post-opportunity" element={<ProtectedRoute><PostOpportunityPage /></ProtectedRoute>} />
 
         {/* Fallback & default redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />
