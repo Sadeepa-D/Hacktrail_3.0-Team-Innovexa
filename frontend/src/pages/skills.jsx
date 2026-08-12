@@ -102,7 +102,7 @@ const Skills = () => {
                 {category.description}
               </p>
               <Link to={`/skills/${category.title.toLowerCase().replace(/\s+/g, '-')}`} className="inline-flex items-center text-sm font-semibold text-slate-300 hover:text-white transition-colors group/link mt-auto">
-                View Opportunities
+                View Skills
                 <ArrowRight className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
               </Link>
             </div>

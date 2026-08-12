@@ -62,7 +62,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="relative bg-slate-950 text-slate-300 border-t border-slate-800/80 overflow-hidden font-sans">
+    <footer id="footer" className="relative bg-slate-950 text-slate-300 border-t border-slate-800/80 overflow-hidden font-sans">
       {/* Ambient background glow effects matching theme */}
       <div className="absolute bottom-0 left-1/4 w-[30rem] h-[30rem] bg-violet-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-0 right-1/4 w-[30rem] h-[30rem] bg-indigo-600/10 rounded-full blur-[140px] pointer-events-none" />
