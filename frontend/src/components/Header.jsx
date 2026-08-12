@@ -27,9 +27,12 @@ const Header = () => {
             <Link to="/opportunities" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
               Opportunities
             </Link>
-            <Link to="/contacts" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
+            <button 
+              onClick={() => document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors cursor-pointer"
+            >
               Contacts
-            </Link>
+            </button>
           </nav>
 
           {/* Auth Buttons */}
