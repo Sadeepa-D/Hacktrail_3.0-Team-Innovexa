@@ -4,10 +4,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { categoryData } from '../data/skillCategoryData';
 import { ArrowLeft, User, Phone, Search } from 'lucide-react';
+import SkillUserDetails from '../components/SkillUserDetails';
 
 const SkillCategoryDetail = () => {
   const { category } = useParams();
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSkill, setSelectedSkill] = useState(null);
   
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,7 +70,8 @@ const SkillCategoryDetail = () => {
               return (
               <div 
                 key={skill.id}
-                className={`bg-slate-900/60 border border-slate-800 backdrop-blur-xl rounded-3xl p-6 hover:-translate-y-2 transition-all duration-300 group shadow-xl ${data.shadowColor} hover:shadow-2xl hover:shadow-${data.accentColor.split('-')[1]}/30 hover:border-slate-700 flex flex-col h-full`}
+                onClick={() => setSelectedSkill(skill)}
+                className={`bg-slate-900/60 border border-slate-800 backdrop-blur-xl rounded-3xl p-6 hover:-translate-y-2 transition-all duration-300 group shadow-xl ${data.shadowColor} hover:shadow-2xl hover:shadow-${data.accentColor.split('-')[1]}/30 hover:border-slate-700 flex flex-col h-full cursor-pointer`}
               >
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${data.accentColor} flex items-center justify-center text-white mb-6 shadow-lg transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
                   <Icon className="w-7 h-7" />
@@ -98,6 +101,12 @@ const SkillCategoryDetail = () => {
           )}
         </div>
       </main>
+
+      {/* Skiller Detail Modal */}
+      <SkillUserDetails 
+        selectedSkill={selectedSkill} 
+        onClose={() => setSelectedSkill(null)} 
+      />
     </div>
   );
 };
