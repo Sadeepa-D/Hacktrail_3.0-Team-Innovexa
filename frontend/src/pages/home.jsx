@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, ArrowRight, ChevronRight, ChevronLeft } from "lucide-react";
-import logoImage from "../assets/logo.png";
+import Header from "../components/Header";
 
 const slides = [
   {
@@ -51,52 +51,7 @@ const Home = () => {
       <div className="absolute bottom-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-indigo-600/20 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/50 border-b border-slate-800/80 backdrop-blur-xl">
-        <div className="w-full px-4 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-24">
-            {/* Logo */}
-            <Link to="/" className="flex-shrink-0 flex items-center group">
-              <img 
-                src={logoImage} 
-                alt="SKILLORA Logo" 
-                className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform drop-shadow-md" 
-              />
-            </Link>
-
-            {/* Navigation Links */}
-            <nav className="hidden md:flex items-center gap-8">
-              <Link to="/" className="text-sm font-medium text-white hover:text-violet-400 transition-colors">
-                Home
-              </Link>
-              <Link to="/skills" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
-                Skill Feeds
-              </Link>
-              <Link to="/opportunities" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
-                Opportunities
-              </Link>
-              <Link to="/contacts" className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
-                Contacts
-              </Link>
-            </nav>
-
-            {/* Auth Buttons */}
-            <div className="flex items-center gap-4">
-              <Link
-                to="/login"
-                className="hidden sm:block text-sm font-semibold text-slate-300 hover:text-white transition-colors px-4 py-2"
-              >
-                Sign in
-              </Link>
-              <Link
-                to="/register"
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-violet-600/30 active:scale-[0.99] transition-all cursor-pointer"
-              >
-                Sign up
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Main Content Area */}
       <main className="pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 min-h-screen flex items-center">
@@ -104,15 +59,12 @@ const Home = () => {
           
           {/* Left Column: Text & CTAs */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50 text-violet-300 text-xs font-semibold mb-6 backdrop-blur-sm shadow-sm">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Welcome to the future of learning</span>
-            </div>
+            
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
-              Elevate Your <br />
+              Turn Your Skills <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">
-                Potential
+                Into Opportunities
               </span>
             </h1>
             
