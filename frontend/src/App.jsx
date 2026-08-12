@@ -30,14 +30,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
 
         {/* Protected routes */}
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/home" element={<Home />} />
 
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/home" replace />} />
