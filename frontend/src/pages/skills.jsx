@@ -1,64 +1,64 @@
 import React from "react";
 import Header from "../components/Header";
 import { 
-  Code, 
+  Terminal, 
   Palette, 
-  GraduationCap, 
-  PenTool, 
-  Share2, 
-  Camera, 
-  Video,
+  MessageSquare, 
+  Briefcase, 
+  Globe, 
+  Users, 
+  LayoutGrid,
   ArrowRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const skillCategories = [
   {
-    title: "Web Development",
-    icon: <Code className="w-7 h-7" />,
-    description: "Build modern, responsive websites and full-stack applications.",
+    title: "TECHNICAL",
+    icon: <Terminal className="w-7 h-7" />,
+    description: "Programming, IT, engineering, and data analysis.",
     color: "from-blue-500 to-cyan-400",
     shadow: "shadow-blue-500/20"
   },
   {
-    title: "Graphic Design",
+    title: "DESIGN",
     icon: <Palette className="w-7 h-7" />,
-    description: "Create stunning visuals, logos, and beautiful digital art.",
+    description: "Graphic design, UI/UX, video editing, and digital art.",
     color: "from-pink-500 to-rose-400",
     shadow: "shadow-pink-500/20"
   },
   {
-    title: "Online Teaching",
-    icon: <GraduationCap className="w-7 h-7" />,
-    description: "Share your knowledge and tutor students globally online.",
+    title: "COMMUNICATION",
+    icon: <MessageSquare className="w-7 h-7" />,
+    description: "Writing, public speaking, negotiation, and translation.",
     color: "from-emerald-500 to-teal-400",
     shadow: "shadow-emerald-500/20"
   },
   {
-    title: "Writing",
-    icon: <PenTool className="w-7 h-7" />,
-    description: "Craft compelling content, technical articles, and copy.",
+    title: "MANAGEMENT",
+    icon: <Briefcase className="w-7 h-7" />,
+    description: "Project management, leadership, and administration.",
     color: "from-orange-500 to-amber-400",
     shadow: "shadow-orange-500/20"
   },
   {
-    title: "Social Media Management",
-    icon: <Share2 className="w-7 h-7" />,
-    description: "Manage brand campaigns and grow online communities.",
+    title: "LANGUAGE",
+    icon: <Globe className="w-7 h-7" />,
+    description: "Bilingual skills, interpretation, and language teaching.",
     color: "from-violet-500 to-purple-400",
     shadow: "shadow-violet-500/20"
   },
   {
-    title: "Photography",
-    icon: <Camera className="w-7 h-7" />,
-    description: "Capture moments and provide professional photo edits.",
+    title: "SOFT_SKILL",
+    icon: <Users className="w-7 h-7" />,
+    description: "Teamwork, problem-solving, empathy, and adaptability.",
     color: "from-yellow-500 to-orange-400",
     shadow: "shadow-yellow-500/20"
   },
   {
-    title: "Video Editing",
-    icon: <Video className="w-7 h-7" />,
-    description: "Produce engaging video content, effects, and animations.",
+    title: "OTHER",
+    icon: <LayoutGrid className="w-7 h-7" />,
+    description: "Unique talents and specialized diverse skills.",
     color: "from-red-500 to-rose-500",
     shadow: "shadow-red-500/20"
   }
