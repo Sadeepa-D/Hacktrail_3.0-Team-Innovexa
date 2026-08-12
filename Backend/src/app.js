@@ -6,6 +6,9 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 
 const userRoutes = require("./routes/user.routes");
+const skillRoutes = require("./routes/skill.routes");
+const opportunityRoutes = require("./routes/opportunity.routes");
+
 
 const app = express();
 
@@ -50,7 +53,9 @@ if (process.env.NODE_ENV === "development") {
 
 // Register API Routes
 app.use("/api/user", userRoutes);
-app.use("/api/auth", userRoutes); // Alias for backward compatibility
+app.use("/api/auth", userRoutes);         // Alias for backward compatibility
+app.use("/api/skills", skillRoutes);
+app.use("/api/opportunities", opportunityRoutes);
 
 // Health Check Route
 app.get("/health", (req, res) => {
