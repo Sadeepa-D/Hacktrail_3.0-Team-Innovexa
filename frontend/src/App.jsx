@@ -1,6 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import Home from "./pages/home";
+import Register from "./pages/register";
 
 const App = () => {
   return (
@@ -14,16 +16,8 @@ const App = () => {
         }}
       />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              <h1 className="text-4xl font-bold text-blue-600">
-                HackTrail 3.0
-              </h1>
-            </div>
-          }
-        />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );
