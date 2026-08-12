@@ -5,6 +5,7 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Home from "./pages/home";
 import Skills from "./pages/skills";
+import SkillCategoryDetail from "./pages/SkillCategoryDetail";
 import Opportunities from "./pages/opportunities";
 import PostSkillPage from "./pages/PostSkillPage";
 import PostOpportunityPage from "./pages/PostOpportunityPage";
@@ -34,6 +35,7 @@ const App = () => {
         {/* Main pages */}
         <Route path="/home" element={<Home />} />
         <Route path="/skills" element={<Skills />} />
+        <Route path="/skills/:category" element={<SkillCategoryDetail />} />
         <Route path="/opportunities" element={<Opportunities />} />
 
         {/* User management routes (Protected) */}
