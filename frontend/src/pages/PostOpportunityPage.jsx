@@ -306,9 +306,9 @@ const PostOpportunityPage = () => {
                           )}
                           {opp.salary != null && (
                             <span className="text-emerald-400 font-semibold">
-                              ${opp.salary}
+                              Rs. {opp.salary}
                               {opp.salaryMax
-                                ? ` – $${opp.salaryMax}`
+                                ? ` – Rs. ${opp.salaryMax}`
                                 : ""} / {opp.salaryType}
                             </span>
                           )}
