@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   User, MapPin, Calendar, Sparkles, Briefcase,
-  Award, Clock, DollarSign, Loader2, ArrowLeft,
-  ChevronRight, Tag, ShieldCheck, CheckCircle2
+  Award, Clock, Loader2, ArrowLeft,
+  ShieldCheck, MessageSquare
 } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { fetchPublicProfile } from "../lib/searchApi";
+import { openDirectMessageWithUser } from "../components/ChatMessengerPopup";
+import { useAuth } from "../context/authcontext";
 import toast from "react-hot-toast";
 
 const categoryColors = {
@@ -23,10 +25,11 @@ const categoryColors = {
 const UserProfilePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
 
   const [profileUser, setProfileUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("skills"); // "skills" | "opportunities"
+  const [activeTab, setActiveTab] = useState("skills");
 
   useEffect(() => {
     const getProfile = async () => {
@@ -46,6 +49,19 @@ const UserProfilePage = () => {
       getProfile();
     }
   }, [id]);
+
+  const handleOpenChat = () => {
+    if (!currentUser) {
+      toast.error("Please sign in to send direct messages.");
+      navigate("/login");
+      return;
+    }
+    if (currentUser.id === profileUser.id) {
+      toast.error("You cannot message yourself.");
+      return;
+    }
+    openDirectMessageWithUser(profileUser);
+  };
 
   if (loading) {
     return (
@@ -110,63 +126,76 @@ const UserProfilePage = () => {
             <div className="h-32 w-32 bg-violet-600/10 rounded-full blur-2xl" />
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
-            {/* Avatar */}
-            {profileUser.avatarUrl ? (
-              <img
-                src={profileUser.avatarUrl}
-                alt={fullName}
-                className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-violet-500/40 shadow-xl shadow-violet-950/50"
-              />
-            ) : (
-              <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-3xl font-extrabold shadow-xl shadow-violet-950/50 border border-violet-400/30">
-                {fullName.charAt(0).toUpperCase()}
-              </div>
-            )}
-
-            {/* Info */}
-            <div className="flex-1 text-center sm:text-left">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                  {fullName}
-                </h1>
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 border border-emerald-800/50 text-xs font-semibold self-center sm:self-auto">
-                  <ShieldCheck className="w-3.5 h-3.5" /> Public Profile
-                </span>
-              </div>
-
-              <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs sm:text-sm text-slate-400 mt-2">
-                {profileUser.city && (
-                  <span className="flex items-center gap-1 text-slate-300">
-                    <MapPin className="w-4 h-4 text-violet-400" />
-                    {profileUser.city}
-                  </span>
-                )}
-                {memberSince && (
-                  <span className="flex items-center gap-1 text-slate-400">
-                    <Calendar className="w-4 h-4 text-indigo-400" />
-                    Member since {memberSince}
-                  </span>
-                )}
-              </div>
-
-              {/* Stat Counters */}
-              <div className="flex items-center justify-center sm:justify-start gap-6 mt-6 pt-4 border-t border-slate-800/80">
-                <div className="text-center sm:text-left">
-                  <span className="text-lg font-bold text-white block">
-                    {profileUser.skills?.length || 0}
-                  </span>
-                  <span className="text-xs text-slate-400 uppercase tracking-wider">Posted Skills</span>
+          <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between gap-6 relative z-10">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              {/* Avatar */}
+              {profileUser.avatarUrl ? (
+                <img
+                  src={profileUser.avatarUrl}
+                  alt={fullName}
+                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover border-2 border-violet-500/40 shadow-xl shadow-violet-950/50"
+                />
+              ) : (
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-3xl font-extrabold shadow-xl shadow-violet-950/50 border border-violet-400/30">
+                  {fullName.charAt(0).toUpperCase()}
                 </div>
-                <div className="h-8 w-px bg-slate-800" />
-                <div className="text-center sm:text-left">
-                  <span className="text-lg font-bold text-white block">
-                    {profileUser.opportunities?.length || 0}
+              )}
+
+              {/* Info */}
+              <div className="flex-1 text-center sm:text-left">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+                  <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                    {fullName}
+                  </h1>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-400 border border-emerald-800/50 text-xs font-semibold self-center sm:self-auto">
+                    <ShieldCheck className="w-3.5 h-3.5" /> Public Profile
                   </span>
-                  <span className="text-xs text-slate-400 uppercase tracking-wider">Opportunities</span>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs sm:text-sm text-slate-400 mt-2">
+                  {profileUser.city && (
+                    <span className="flex items-center gap-1 text-slate-300">
+                      <MapPin className="w-4 h-4 text-violet-400" />
+                      {profileUser.city}
+                    </span>
+                  )}
+                  {memberSince && (
+                    <span className="flex items-center gap-1 text-slate-400">
+                      <Calendar className="w-4 h-4 text-indigo-400" />
+                      Member since {memberSince}
+                    </span>
+                  )}
+                </div>
+
+                {/* Stat Counters */}
+                <div className="flex items-center justify-center sm:justify-start gap-6 mt-6 pt-4 border-t border-slate-800/80">
+                  <div className="text-center sm:text-left">
+                    <span className="text-lg font-bold text-white block">
+                      {profileUser.skills?.length || 0}
+                    </span>
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">Posted Skills</span>
+                  </div>
+                  <div className="h-8 w-px bg-slate-800" />
+                  <div className="text-center sm:text-left">
+                    <span className="text-lg font-bold text-white block">
+                      {profileUser.opportunities?.length || 0}
+                    </span>
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">Opportunities</span>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Direct Message Trigger Button */}
+            {(!currentUser || currentUser.id !== profileUser.id) && (
+              <button
+                onClick={handleOpenChat}
+                className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm shadow-lg shadow-violet-600/30 active:scale-95 transition-all flex items-center gap-2.5 cursor-pointer shrink-0 border border-violet-400/30"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Message User</span>
+              </button>
+            )}
           </div>
         </div>
 

@@ -11,6 +11,7 @@ import PostOpportunityPage from "./pages/PostOpportunityPage";
 import Profile from "./pages/profile";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ChatMessengerPopup from "./components/ChatMessengerPopup";
 
 const App = () => {
   return (
@@ -47,6 +48,9 @@ const App = () => {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
+
+      {/* Global Bottom-Right Direct Text Messenger Widget */}
+      <ChatMessengerPopup />
     </>
   );
 };
