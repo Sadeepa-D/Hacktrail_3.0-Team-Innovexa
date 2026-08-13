@@ -15,7 +15,10 @@ import {
   Tag,
   ToggleLeft,
   ToggleRight,
-  X
+  X,
+  CreditCard,
+  Gift,
+  Handshake
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -28,6 +31,15 @@ export const SKILL_CATEGORIES = [
   { value: "LANGUAGE", label: "Languages & Linguistics", icon: "🌐" },
   { value: "SOFT_SKILL", label: "Soft Skills & Leadership", icon: "🤝" },
   { value: "OTHER", label: "Other / General", icon: "✨" },
+];
+
+export const PRICING_TYPES = [
+  { value: "HOURLY", label: "Hourly Rate ($/hr)", icon: "⏱️", placeholder: "e.g. 45.00" },
+  { value: "FIXED", label: "Fixed Price ($/project)", icon: "💼", placeholder: "e.g. 250.00" },
+  { value: "DAILY", label: "Daily Rate ($/day)", icon: "📅", placeholder: "e.g. 150.00" },
+  { value: "MONTHLY", label: "Monthly Rate ($/mo)", icon: "🗓️", placeholder: "e.g. 1200.00" },
+  { value: "FREE", label: "Free / Voluntary Service", icon: "🎁", placeholder: "Free (0.00)" },
+  { value: "NEGOTIABLE", label: "Negotiable / Barter", icon: "🤝", placeholder: "Negotiable" },
 ];
 
 export const AVAILABILITY_OPTIONS = [
@@ -55,7 +67,7 @@ const SkillForm = ({
 }) => {
   const isEditMode = Boolean(initialData?.id);
 
-  // Form state according to Prisma Skill model fields
+  // Form state according to Prisma Skill model fields + Flexible Pricing Type
   const [formData, setFormData] = useState({
     name: "",
     phonenum: "",
@@ -63,6 +75,7 @@ const SkillForm = ({
     category: "OTHER",
     description: "",
     qualification: "",
+    rateType: "HOURLY", // "HOURLY" | "FIXED" | "DAILY" | "MONTHLY" | "FREE" | "NEGOTIABLE"
     hourlyRate: "",
     availability: "Flexible",
     experience: "1 - 2 Years (Junior)",
@@ -77,6 +90,14 @@ const SkillForm = ({
   // Pre-fill form when initialData changes or for edit mode
   useEffect(() => {
     if (initialData) {
+      const rateVal = initialData.hourlyRate;
+      let initialRateType = "HOURLY";
+      if (rateVal === 0) {
+        initialRateType = "FREE";
+      } else if (rateVal === null || rateVal === undefined) {
+        initialRateType = "NEGOTIABLE";
+      }
+
       setFormData({
         name: initialData.name || "",
         phonenum: initialData.phonenum || "",
@@ -84,7 +105,8 @@ const SkillForm = ({
         category: initialData.category || "OTHER",
         description: initialData.description || "",
         qualification: initialData.qualification || "",
-        hourlyRate: initialData.hourlyRate !== undefined && initialData.hourlyRate !== null ? String(initialData.hourlyRate) : "",
+        rateType: initialRateType,
+        hourlyRate: rateVal !== undefined && rateVal !== null ? String(rateVal) : "",
         availability: initialData.availability || "Flexible",
         experience: initialData.experience || "1 - 2 Years (Junior)",
         isActive: initialData.isActive !== undefined ? initialData.isActive : true,
@@ -95,10 +117,19 @@ const SkillForm = ({
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    
+    if (name === "rateType") {
+      setFormData((prev) => ({
+        ...prev,
+        rateType: value,
+        hourlyRate: value === "FREE" ? "0" : value === "NEGOTIABLE" ? "" : prev.hourlyRate,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
 
     // Clear error for field on user input
     if (errors[name]) {
@@ -123,8 +154,10 @@ const SkillForm = ({
       newErrors.email = "Please enter a valid email address.";
     }
 
-    if (formData.hourlyRate && (isNaN(Number(formData.hourlyRate)) || Number(formData.hourlyRate) < 0)) {
-      newErrors.hourlyRate = "Hourly rate must be a non-negative number.";
+    if (formData.rateType !== "FREE" && formData.rateType !== "NEGOTIABLE") {
+      if (formData.hourlyRate && (isNaN(Number(formData.hourlyRate)) || Number(formData.hourlyRate) < 0)) {
+        newErrors.hourlyRate = "Amount must be a valid positive number.";
+      }
     }
 
     setErrors(newErrors);
@@ -139,6 +172,15 @@ const SkillForm = ({
       return;
     }
 
+    let finalRate = null;
+    if (formData.rateType === "FREE") {
+      finalRate = 0;
+    } else if (formData.rateType === "NEGOTIABLE") {
+      finalRate = null;
+    } else if (formData.hourlyRate) {
+      finalRate = parseFloat(formData.hourlyRate);
+    }
+
     const payload = {
       name: formData.name.trim(),
       phonenum: formData.phonenum.trim(),
@@ -146,7 +188,7 @@ const SkillForm = ({
       category: formData.category,
       description: formData.description.trim() || null,
       qualification: formData.qualification.trim() || null,
-      hourlyRate: formData.hourlyRate ? parseFloat(formData.hourlyRate) : null,
+      hourlyRate: finalRate,
       availability: formData.availability || null,
       experience: formData.experience || null,
       isActive: formData.isActive,
@@ -163,10 +205,11 @@ const SkillForm = ({
         setInternalSubmitting(false);
       }
     } else {
-      // Fallback demo toast if no external handler provided
       toast.success(isEditMode ? "Skill updated successfully!" : "Skill created successfully!");
     }
   };
+
+  const currentPricing = PRICING_TYPES.find((p) => p.value === formData.rateType) || PRICING_TYPES[0];
 
   return (
     <div className="w-full max-w-2xl mx-auto bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 md:p-10 shadow-2xl shadow-violet-950/30 text-slate-100 font-sans relative overflow-hidden">
@@ -313,37 +356,74 @@ const SkillForm = ({
           </div>
         </div>
 
-        {/* Row 3: Hourly Rate, Availability, Experience */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-          {/* Hourly Rate */}
-          <div className="flex flex-col gap-2">
-            <label htmlFor="skill-rate" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
-              <DollarSign className="w-3.5 h-3.5 text-violet-400" />
-              Hourly Rate ($)
-            </label>
-            <input
-              id="skill-rate"
-              type="number"
-              step="0.01"
-              min="0"
-              name="hourlyRate"
-              placeholder="e.g. 45.00"
-              value={formData.hourlyRate}
-              onChange={handleChange}
-              className={`w-full px-4 py-3 bg-slate-950/70 rounded-xl border text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all ${
-                errors.hourlyRate
-                  ? "border-rose-500/80 focus:ring-rose-500/50"
-                  : "border-slate-800/90 focus:ring-violet-500/70 focus:border-violet-500/50"
-              }`}
-            />
-            {errors.hourlyRate && (
-              <p className="text-xs text-rose-400 flex items-center gap-1 mt-0.5">
-                <AlertCircle className="w-3.5 h-3.5" />
-                <span>{errors.hourlyRate}</span>
-              </p>
-            )}
-          </div>
+        {/* Row 3: FLEXIBLE SERVICE PRICING (Pricing Model + Amount) */}
+        <div className="bg-slate-950/60 p-4 rounded-2xl border border-slate-800/80 flex flex-col gap-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <CreditCard className="w-4 h-4 text-violet-400" />
+            Service Pricing & Charge Type
+          </span>
 
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Pricing Model Type Select */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="skill-rate-type" className="text-xs font-medium text-slate-300">
+                Charge Model Type
+              </label>
+              <select
+                id="skill-rate-type"
+                name="rateType"
+                value={formData.rateType}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-slate-900 rounded-xl border border-slate-800 text-white text-sm focus:outline-none focus:ring-2 focus:ring-violet-500/70 focus:border-violet-500/50 transition-all cursor-pointer font-medium"
+              >
+                {PRICING_TYPES.map((pt) => (
+                  <option key={pt.value} value={pt.value} className="bg-slate-900 text-white">
+                    {pt.icon} {pt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Amount Input */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="skill-rate-amount" className="text-xs font-medium text-slate-300">
+                Amount ($) {formData.rateType === "FREE" && "(Free Service)"}
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <DollarSign className="w-4 h-4" />
+                </div>
+                <input
+                  id="skill-rate-amount"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  name="hourlyRate"
+                  disabled={formData.rateType === "FREE"}
+                  placeholder={currentPricing.placeholder}
+                  value={formData.rateType === "FREE" ? "0" : formData.hourlyRate}
+                  onChange={handleChange}
+                  className={`w-full pl-10 pr-4 py-3 bg-slate-900 rounded-xl border text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all ${
+                    formData.rateType === "FREE" ? "opacity-50 cursor-not-allowed bg-slate-950" : ""
+                  } ${
+                    errors.hourlyRate
+                      ? "border-rose-500/80 focus:ring-rose-500/50"
+                      : "border-slate-800 focus:ring-violet-500/70 focus:border-violet-500/50"
+                  }`}
+                />
+              </div>
+              {errors.hourlyRate && (
+                <p className="text-xs text-rose-400 flex items-center gap-1 mt-0.5">
+                  <AlertCircle className="w-3.5 h-3.5" />
+                  <span>{errors.hourlyRate}</span>
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Row 4: Availability & Experience */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {/* Availability */}
           <div className="flex flex-col gap-2">
             <label htmlFor="skill-availability" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
@@ -369,7 +449,7 @@ const SkillForm = ({
           <div className="flex flex-col gap-2">
             <label htmlFor="skill-experience" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
               <Award className="w-3.5 h-3.5 text-violet-400" />
-              Experience
+              Experience Level
             </label>
             <select
               id="skill-experience"
@@ -387,7 +467,7 @@ const SkillForm = ({
           </div>
         </div>
 
-        {/* Row 4: Qualification */}
+        {/* Row 5: Qualification */}
         <div className="flex flex-col gap-2">
           <label htmlFor="skill-qualification" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
             <UserCheck className="w-3.5 h-3.5 text-violet-400" />
@@ -404,7 +484,7 @@ const SkillForm = ({
           />
         </div>
 
-        {/* Row 5: Description */}
+        {/* Row 6: Description */}
         <div className="flex flex-col gap-2">
           <label htmlFor="skill-description" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
             <AlignLeft className="w-3.5 h-3.5 text-violet-400" />
@@ -421,7 +501,7 @@ const SkillForm = ({
           />
         </div>
 
-        {/* Row 6: Active Status Toggle */}
+        {/* Row 7: Active Status Toggle */}
         <div className="flex items-center justify-between p-4 rounded-xl bg-slate-950/50 border border-slate-800/70">
           <div className="flex items-center gap-3">
             <button

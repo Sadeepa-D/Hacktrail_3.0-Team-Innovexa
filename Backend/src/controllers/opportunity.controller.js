@@ -40,13 +40,14 @@ const OPP_PUBLIC_SELECT = {
 };
 
 const buildOppFilters = (query) => {
-  const { type, category, status, search, isRemote, location } = query;
+  const { type, category, status, search, isRemote, location, isVerified } = query;
   const where = {};
 
   if (type) where.type = type.toUpperCase();
   if (category) where.category = category.toUpperCase();
   if (status) where.status = status.toUpperCase();
   if (isRemote !== undefined) where.isRemote = isRemote === "true";
+  if (isVerified !== undefined) where.isVerified = isVerified === "true";
   if (location) where.location = { contains: location, mode: "insensitive" };
 
   if (search) {
@@ -125,7 +126,7 @@ const opportunityController = {
     }
   },
 
-  // ── GET /opportunities ── List all open opportunities (public feed)
+  // ── GET /opportunities ── List all open & verified opportunities (public feed)
   getAllOpportunities: async (req, res) => {
     try {
       const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -136,6 +137,7 @@ const opportunityController = {
 
       const where = {
         status: "OPEN",
+        isVerified: true, // Only show verified opportunities in public feed
         ...buildOppFilters(req.query),
       };
 
