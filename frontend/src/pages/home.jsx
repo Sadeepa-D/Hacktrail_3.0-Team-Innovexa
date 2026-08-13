@@ -6,24 +6,24 @@ import Header from "../components/Header";
 
 const slides = [
   {
-    url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
-    title: "Collaborative Learning",
-    description: "Join teams and grow together.",
+    url: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop",
+    title: "Unlock Your Potential",
+    description: "Showcase your unique skills and connect with global creators.",
   },
   {
-    url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop",
-    title: "Master Tech Skills",
-    description: "Learn cutting-edge technologies.",
+    url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+    title: "Find Top Freelancers",
+    description: "Hire talented individuals for your next big project.",
   },
   {
-    url: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
-    title: "Career Opportunities",
-    description: "Discover paths that match your passion.",
+    url: "https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=1200&auto=format&fit=crop",
+    title: "Endless Opportunities",
+    description: "Browse part-time, full-time, and internship roles.",
   },
   {
-    url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop",
-    title: "Creative Workspaces",
-    description: "Build portfolios that stand out.",
+    url: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?q=80&w=1200&auto=format&fit=crop",
+    title: "Build Your Network",
+    description: "Join a thriving community of professionals and innovators.",
   },
 ];
 
