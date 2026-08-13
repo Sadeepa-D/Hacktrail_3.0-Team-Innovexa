@@ -10,6 +10,10 @@ import {
   ShieldCheck,
   Compass,
   Code,
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -169,7 +173,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Navigation Links */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 lg:justify-self-center">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Platform
             </h3>
@@ -203,7 +207,7 @@ const Footer = () => {
           </div>
 
           {/* Account & Resources */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 lg:justify-self-center">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Account & Join
             </h3>
@@ -243,7 +247,32 @@ const Footer = () => {
             </ul>
           </div>
 
-  
+          {/* Contact Us */}
+          <div className="lg:col-span-4 lg:justify-self-end">
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+              Contact Us
+            </h3>
+            <ul className="space-y-3 text-sm text-slate-400">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-violet-400 shrink-0 mt-0.5" />
+                <span>123 Galle Road,<br />Matara, TC 10101</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-violet-400 shrink-0" />
+                <span>+94 (11) 234-5678</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-violet-400 shrink-0" />
+                <a href="mailto:hello@skillora.com" className="hover:text-violet-400 transition-colors">
+                  skillora@gmail.com
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Clock className="w-4 h-4 text-violet-400 shrink-0" />
+                <span>Mon - Fri, 9:00 AM - 6:00 PM</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Bottom Bar: Rights, Status & Back To Top */}
