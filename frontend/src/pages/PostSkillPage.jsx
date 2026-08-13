@@ -2,13 +2,24 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
-  Plus, Pencil, Trash2, ToggleLeft, ToggleRight,
-  Loader2, Eye, Sparkles, RefreshCw, ChevronLeft,
+  Plus,
+  Pencil,
+  Trash2,
+  ToggleLeft,
+  ToggleRight,
+  Loader2,
+  Eye,
+  Sparkles,
+  RefreshCw,
+  ChevronLeft,
 } from "lucide-react";
 import SkillForm from "../components/SkillForm";
 import {
-  createSkill, updateSkill, deleteSkill,
-  fetchMySkills, toggleSkillStatus,
+  createSkill,
+  updateSkill,
+  deleteSkill,
+  fetchMySkills,
+  toggleSkillStatus,
 } from "../lib/skillsApi";
 import { useAuth } from "../context/authcontext";
 
@@ -78,7 +89,7 @@ const PostSkillPage = () => {
       const data = await updateSkill(editTarget.id, payload);
       toast.success("Skill updated successfully!");
       setSkills((prev) =>
-        prev.map((s) => (s.id === editTarget.id ? data.skill : s))
+        prev.map((s) => (s.id === editTarget.id ? data.skill : s)),
       );
       setView("list");
       setEditTarget(null);
@@ -93,7 +104,12 @@ const PostSkillPage = () => {
 
   // ── Delete ───────────────────────────────────────────────────────────────────
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this skill? This cannot be undone.")) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this skill? This cannot be undone.",
+      )
+    )
+      return;
     setDeletingId(id);
     try {
       await deleteSkill(id);
@@ -113,7 +129,9 @@ const PostSkillPage = () => {
       const data = await toggleSkillStatus(id);
       toast.success(data.message);
       setSkills((prev) =>
-        prev.map((s) => (s.id === id ? { ...s, isActive: data.skill.isActive } : s))
+        prev.map((s) =>
+          s.id === id ? { ...s, isActive: data.skill.isActive } : s,
+        ),
       );
     } catch (err) {
       toast.error(err?.response?.data?.error || "Failed to toggle status.");
@@ -131,7 +149,18 @@ const PostSkillPage = () => {
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        {/* ── Top Left Back Navigation ── */}
+        <div className="mb-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold transition-all backdrop-blur-sm shadow-md cursor-pointer group"
+          >
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-violet-400" />
+            <span>Back</span>
+          </button>
+        </div>
+
         {/* ── Page header ── */}
         {view === "list" && (
           <>
@@ -141,8 +170,12 @@ const PostSkillPage = () => {
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-extrabold text-white tracking-tight">My Skills</h1>
-                  <p className="text-slate-400 text-sm">Manage your posted skill profiles</p>
+                  <h1 className="text-2xl font-extrabold text-white tracking-tight">
+                    My Skills
+                  </h1>
+                  <p className="text-slate-400 text-sm">
+                    Manage your posted skill profiles
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -171,10 +204,16 @@ const PostSkillPage = () => {
               </div>
             ) : skills.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-                <div className="h-16 w-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-3xl">💡</div>
+                <div className="h-16 w-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-3xl">
+                  💡
+                </div>
                 <div>
-                  <p className="text-white font-semibold text-lg">No skills posted yet</p>
-                  <p className="text-slate-400 text-sm mt-1">Share your skills with the community and get discovered!</p>
+                  <p className="text-white font-semibold text-lg">
+                    No skills posted yet
+                  </p>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Share your skills with the community and get discovered!
+                  </p>
                 </div>
                 <button
                   onClick={() => setView("create")}
@@ -197,7 +236,9 @@ const PostSkillPage = () => {
                     {/* Left */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                        <h3 className="font-bold text-white text-base truncate">{skill.name}</h3>
+                        <h3 className="font-bold text-white text-base truncate">
+                          {skill.name}
+                        </h3>
                         <span
                           className={`text-[11px] px-2 py-0.5 rounded-full border font-medium ${categoryColors[skill.category] || categoryColors.OTHER}`}
                         >
@@ -226,25 +267,30 @@ const PostSkillPage = () => {
                             {skill.rateType === "FREE" || skill.hourlyRate === 0
                               ? "Free Service"
                               : skill.rateType === "NEGOTIABLE"
-                              ? "Negotiable"
-                              : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
-                                  skill.rateType === "FIXED"
-                                    ? " / Project"
-                                    : skill.rateType === "DAILY"
-                                    ? " / Day"
-                                    : skill.rateType === "MONTHLY"
-                                    ? " / Month"
-                                    : " / Hour"
-                                }`}
+                                ? "Negotiable"
+                                : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
+                                    skill.rateType === "FIXED"
+                                      ? " / Project"
+                                      : skill.rateType === "DAILY"
+                                        ? " / Day"
+                                        : skill.rateType === "MONTHLY"
+                                          ? " / Month"
+                                          : " / Hour"
+                                  }`}
                           </span>
                         )}
-                        {skill.availability && <span>⏰ {skill.availability}</span>}
+                        {skill.availability && (
+                          <span>⏰ {skill.availability}</span>
+                        )}
                         {skill.experience && <span>🏅 {skill.experience}</span>}
                         <span className="flex items-center gap-1">
                           <Eye className="w-3 h-3" /> {skill.viewCount} views
                         </span>
                         <span className="text-slate-600">
-                          {new Date(skill.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                          {new Date(skill.createdAt).toLocaleDateString(
+                            "en-US",
+                            { month: "short", day: "numeric", year: "numeric" },
+                          )}
                         </span>
                       </div>
                     </div>
@@ -269,7 +315,10 @@ const PostSkillPage = () => {
 
                       {/* Edit */}
                       <button
-                        onClick={() => { setEditTarget(skill); setView("edit"); }}
+                        onClick={() => {
+                          setEditTarget(skill);
+                          setView("edit");
+                        }}
                         className="p-2 rounded-xl text-slate-400 hover:text-indigo-300 hover:bg-indigo-900/30 transition-all cursor-pointer"
                         title="Edit"
                       >
@@ -318,7 +367,10 @@ const PostSkillPage = () => {
         {view === "edit" && editTarget && (
           <div>
             <button
-              onClick={() => { setView("list"); setEditTarget(null); }}
+              onClick={() => {
+                setView("list");
+                setEditTarget(null);
+              }}
               className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white mb-6 transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" /> Back to My Skills
@@ -326,7 +378,10 @@ const PostSkillPage = () => {
             <SkillForm
               initialData={editTarget}
               onSubmit={handleUpdate}
-              onCancel={() => { setView("list"); setEditTarget(null); }}
+              onCancel={() => {
+                setView("list");
+                setEditTarget(null);
+              }}
               isSubmitting={isSubmitting}
             />
           </div>

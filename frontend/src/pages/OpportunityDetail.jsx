@@ -4,8 +4,18 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { fetchAllOpportunities } from "../lib/opportunitiesApi";
 import {
-  ArrowLeft, Building2, Phone, Search, Loader2, Sparkles,
-  ShieldCheck, MapPin, DollarSign, Briefcase, ChevronRight, Award
+  ArrowLeft,
+  Building2,
+  Phone,
+  Search,
+  Loader2,
+  Sparkles,
+  ShieldCheck,
+  MapPin,
+  DollarSign,
+  Briefcase,
+  ChevronRight,
+  Award,
 } from "lucide-react";
 import OpportunityUserModal from "../components/OpportunityUserModal";
 import toast from "react-hot-toast";
@@ -13,14 +23,16 @@ import toast from "react-hot-toast";
 const OPP_TYPE_META = {
   JOB: {
     name: "Standard Employment & Jobs",
-    description: "Explore employment roles, career positions, and permanent jobs.",
+    description:
+      "Explore employment roles, career positions, and permanent jobs.",
     accentColor: "from-blue-500 to-cyan-400",
     bgGlow: "bg-blue-600/15",
     shadowColor: "shadow-blue-500/20",
   },
   INTERNSHIP: {
     name: "Internships & Traineeships",
-    description: "Kickstart your career with learning-based work opportunities.",
+    description:
+      "Kickstart your career with learning-based work opportunities.",
     accentColor: "from-emerald-500 to-teal-400",
     bgGlow: "bg-emerald-600/15",
     shadowColor: "shadow-emerald-500/20",
@@ -55,7 +67,8 @@ const OPP_TYPE_META = {
   },
   PROJECT: {
     name: "Project Milestones & Gigs",
-    description: "Collaborate on short-term milestones and specialized projects.",
+    description:
+      "Collaborate on short-term milestones and specialized projects.",
     accentColor: "from-yellow-500 to-orange-400",
     bgGlow: "bg-yellow-600/15",
     shadowColor: "shadow-yellow-500/20",
@@ -66,9 +79,7 @@ const OpportunityDetail = () => {
   const { category } = useParams();
 
   // Convert route parameter (e.g. "part-time" or "part_time" -> "PART_TIME")
-  const typeEnum = category
-    ? category.toUpperCase().replace(/-/g, "_")
-    : "JOB";
+  const typeEnum = category ? category.toUpperCase().replace(/-/g, "_") : "JOB";
 
   const meta = OPP_TYPE_META[typeEnum] || OPP_TYPE_META.JOB;
 
@@ -145,7 +156,9 @@ const OpportunityDetail = () => {
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
             Verified{" "}
-            <span className={`text-transparent bg-clip-text bg-gradient-to-r ${meta.accentColor}`}>
+            <span
+              className={`text-transparent bg-clip-text bg-gradient-to-r ${meta.accentColor}`}
+            >
               {meta.name.split(" ")[0]} Positions
             </span>
           </h1>
@@ -158,7 +171,9 @@ const OpportunityDetail = () => {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
             <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
-            <p className="text-slate-400 text-sm">Fetching verified opportunities from database...</p>
+            <p className="text-slate-400 text-sm">
+              Fetching verified opportunities from database...
+            </p>
           </div>
         ) : opportunities.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -207,7 +222,8 @@ const OpportunityDetail = () => {
                   <div className="pt-4 border-t border-slate-800/80 flex flex-col gap-2 mt-auto">
                     <div className="flex items-center justify-between text-xs">
                       <span className="flex items-center gap-1 text-slate-400 font-medium truncate">
-                        <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> {locationText}
+                        <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />{" "}
+                        {locationText}
                       </span>
                       {opp.salary != null && (
                         <span className="font-bold text-emerald-400 shrink-0">
@@ -219,11 +235,13 @@ const OpportunityDetail = () => {
                     <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
                       {opp.contactPhone ? (
                         <span className="flex items-center gap-1">
-                          <Phone className="w-3 h-3 text-slate-500" /> {opp.contactPhone}
+                          <Phone className="w-3 h-3 text-slate-500" />{" "}
+                          {opp.contactPhone}
                         </span>
                       ) : (
                         <span className="flex items-center gap-1">
-                          <Briefcase className="w-3 h-3 text-slate-500" /> Open Role
+                          <Briefcase className="w-3 h-3 text-slate-500" /> Open
+                          Role
                         </span>
                       )}
                       <span className="text-violet-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center">
@@ -238,7 +256,9 @@ const OpportunityDetail = () => {
         ) : (
           <div className="py-16 text-center text-slate-400 bg-slate-900/40 rounded-3xl border border-slate-800 border-dashed">
             <ShieldCheck className="w-12 h-12 mx-auto mb-4 text-slate-600 opacity-50" />
-            <h3 className="text-lg font-bold text-white mb-1">No Verified Opportunities Found</h3>
+            <h3 className="text-lg font-bold text-white mb-1">
+              No Verified Opportunities Found
+            </h3>
             <p className="text-sm text-slate-400">
               {searchQuery
                 ? `No verified positions in ${meta.name} matching "${searchQuery}".`
