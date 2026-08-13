@@ -31,11 +31,12 @@ const SKILL_PUBLIC_SELECT = {
 };
 
 const buildSkillFilters = (query) => {
-  const { category, search, isActive } = query;
+  const { category, search, isActive, isVerified } = query;
   const where = {};
 
   if (category) where.category = category.toUpperCase();
   if (isActive !== undefined) where.isActive = isActive === "true";
+  if (isVerified !== undefined) where.isVerified = isVerified === "true";
   if (search) {
     where.OR = [
       { name: { contains: search, mode: "insensitive" } },
@@ -99,7 +100,7 @@ const skillController = {
     }
   },
 
-  // ── GET /skills ── List all active skills (public feed)
+  // ── GET /skills ── List all active & verified skills (public feed)
   getAllSkills: async (req, res) => {
     try {
       const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -110,6 +111,7 @@ const skillController = {
 
       const where = {
         isActive: true,
+        isVerified: true, // Only show verified skills in public feed
         ...buildSkillFilters(req.query),
       };
 

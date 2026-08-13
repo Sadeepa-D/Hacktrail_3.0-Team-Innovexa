@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   X, Mail, Phone, BookOpen, Briefcase, Clock,
-  Award, DollarSign, MessageSquare, ExternalLink, User
+  Award, DollarSign, MessageSquare, ExternalLink, User, ShieldCheck
 } from "lucide-react";
 import { openDirectMessageWithUser } from "./ChatMessengerPopup";
 import { useAuth } from "../context/authcontext";
@@ -80,8 +80,13 @@ const SkillUserDetails = ({ selectedSkill, onClose }) => {
             )}
 
             <div className="flex-1 min-w-0">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-violet-400 text-xs font-semibold mb-2 shadow-sm">
-                {selectedSkill.category || "SKILL"}
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                <span className="inline-flex items-center gap-1 text-[11px] px-3 py-1 rounded-full bg-emerald-950/80 text-emerald-400 border border-emerald-800/60 font-bold">
+                  <ShieldCheck className="w-3.5 h-3.5" /> Verified Skiller
+                </span>
+                <span className="text-[11px] px-3 py-1 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-semibold">
+                  {selectedSkill.category || "SKILL"}
+                </span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-1 tracking-tight">
