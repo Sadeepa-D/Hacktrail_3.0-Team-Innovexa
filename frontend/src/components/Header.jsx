@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, Loader2, User, Sparkles, Briefcase, MapPin, X, ShieldCheck } from "lucide-react";
 import logoImage from "../assets/logo.png";
 import { searchUsers } from "../lib/searchApi";
@@ -7,7 +7,21 @@ import { useAuth } from "../context/authcontext";
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, signOut } = useAuth();
+
+  const isActive = (path) => {
+    if (path === "/") return location.pathname === "/";
+    return location.pathname.startsWith(path);
+  };
+
+  const getLinkClass = (path) => {
+    const baseClass = "px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 active:scale-110 active:bg-violet-600 active:text-white cursor-pointer";
+    if (isActive(path)) {
+      return `${baseClass} bg-violet-500/10 text-violet-300 border border-violet-500/20`;
+    }
+    return `${baseClass} text-slate-300 hover:text-white hover:bg-slate-800/60`;
+  };
 
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
@@ -61,7 +75,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 border-b border-slate-800/80 backdrop-blur-xl">
+    <header className="fixed top-0 left-0 right-0 z-50 pt-2 bg-slate-900/80 border-b border-slate-800/80 backdrop-blur-xl">
       <div className="w-full px-4 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20 md:h-24">
           {/* Logo */}
@@ -76,28 +90,19 @@ const Header = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link
-              to="/"
-              className="text-sm font-medium text-white hover:text-violet-400 transition-colors"
-            >
+          <nav className="hidden md:flex items-center gap-2">
+            <Link to="/" className={getLinkClass("/")}>
               Home
             </Link>
-            <Link
-              to="/skills"
-              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
-            >
+            <Link to="/skills" className={getLinkClass("/skills")}>
               Skill Feeds
             </Link>
-            <Link
-              to="/opportunities"
-              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
-            >
+            <Link to="/opportunities" className={getLinkClass("/opportunities")}>
               Opportunities
             </Link>
             <button
               onClick={() => document.getElementById("footer")?.scrollIntoView({ behavior: "smooth" })}
-              className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors cursor-pointer"
+              className="px-4 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 active:scale-110 active:bg-violet-600 active:text-white transition-all duration-300 cursor-pointer"
             >
               Contacts
             </button>
