@@ -41,13 +41,17 @@ const OpportunityManagement = () => {
 
   const handleStatusChange = async (oppId, newStatus) => {
     try {
-      await api.patch(`/admin/opportunities/${oppId}/status`, { status: newStatus });
-      if (newStatus === "OPEN") {
-        await api.patch(`/admin/opportunities/${oppId}/verify`, { isVerified: true });
-      }
+      const res = await api.patch(`/admin/opportunities/${oppId}/status`, { status: newStatus });
+      const updatedOpp = res.data?.opportunity;
       setOpportunities((prev) =>
         prev.map((o) =>
-          o.id === oppId ? { ...o, status: newStatus, isVerified: newStatus === "OPEN" } : o
+          o.id === oppId
+            ? {
+                ...o,
+                status: newStatus,
+                isVerified: updatedOpp ? updatedOpp.isVerified : newStatus === "OPEN",
+              }
+            : o
         )
       );
       toast.success(
