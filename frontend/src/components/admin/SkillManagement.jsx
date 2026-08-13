@@ -8,18 +8,14 @@ import {
   Search,
   Trash2,
   Check,
-  Ban,
   Phone,
-  DollarSign,
   Loader2,
-  RefreshCw,
-  Award
+  RefreshCw
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const SkillManagement = () => {
-  // Tailored Skill categories: "verified" | "pending" | "inactive"
-  const [category, setCategory] = useState("verified");
+  const [category, setCategory] = useState("pending");
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -31,60 +27,12 @@ const SkillManagement = () => {
   const fetchSkills = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/skill").catch(() => null);
-      if (res?.data?.skills) {
-        setSkills(res.data.skills);
-      } else {
-        // Fallback dataset mapped to Prisma Skill model fields
-        setSkills([
-          {
-            id: "s1",
-            name: "React & Node.js Full-Stack",
-            category: "TECHNICAL",
-            phonenum: "+1 555-9012",
-            hourlyRate: 50.0,
-            isVerified: true,
-            isActive: true,
-            statusCategory: "verified",
-            description: "Full stack web development services with MERN stack."
-          },
-          {
-            id: "s2",
-            name: "UI/UX & Mobile Design",
-            category: "DESIGN",
-            phonenum: "+1 555-8812",
-            hourlyRate: 45.0,
-            isVerified: true,
-            isActive: true,
-            statusCategory: "verified",
-            description: "Figma prototypes, design systems, and wireframing."
-          },
-          {
-            id: "s3",
-            name: "Python Data Analytics",
-            category: "TECHNICAL",
-            phonenum: "+1 555-4421",
-            hourlyRate: 60.0,
-            isVerified: false,
-            isActive: true,
-            statusCategory: "pending",
-            description: "Pandas, NumPy, and machine learning models."
-          },
-          {
-            id: "s4",
-            name: "Legacy Hardware Repair",
-            category: "OTHER",
-            phonenum: "+1 555-0000",
-            hourlyRate: 20.0,
-            isVerified: false,
-            isActive: false,
-            statusCategory: "inactive",
-            description: "Temporarily disabled skill listing."
-          }
-        ]);
-      }
+      const res = await api.get("/admin/skills");
+      setSkills(res.data?.skills || []);
     } catch (err) {
-      console.error("Fetch skills error:", err);
+      console.error("Fetch admin skills error:", err);
+      setSkills([]);
+      toast.error("Could not load skills list.");
     } finally {
       setLoading(false);
     }
@@ -92,15 +40,11 @@ const SkillManagement = () => {
 
   const handleVerifySkill = async (skillId, verifyState) => {
     try {
-      await api.put(`/skill/${skillId}`, { isVerified: verifyState }).catch(() => null);
+      await api.put(`/admin/skills/${skillId}/verify`, { isVerified: verifyState });
       setSkills((prev) =>
-        prev.map((s) =>
-          s.id === skillId
-            ? { ...s, isVerified: verifyState, statusCategory: verifyState ? "verified" : "pending" }
-            : s
-        )
+        prev.map((s) => (s.id === skillId ? { ...s, isVerified: verifyState } : s))
       );
-      toast.success(verifyState ? "Skill verified!" : "Verification removed.");
+      toast.success(verifyState ? "Skill verified & approved!" : "Verification status updated.");
     } catch (err) {
       console.error("Verify skill error:", err);
       toast.error("Failed to update skill verification.");
@@ -109,13 +53,9 @@ const SkillManagement = () => {
 
   const handleToggleSkillActive = async (skillId) => {
     try {
-      await api.patch(`/skill/${skillId}/toggle`).catch(() => null);
+      await api.patch(`/admin/skills/${skillId}/toggle`);
       setSkills((prev) =>
-        prev.map((s) =>
-          s.id === skillId
-            ? { ...s, isActive: !s.isActive, statusCategory: !s.isActive ? (s.isVerified ? "verified" : "pending") : "inactive" }
-            : s
-        )
+        prev.map((s) => (s.id === skillId ? { ...s, isActive: !s.isActive } : s))
       );
       toast.success("Skill active status updated.");
     } catch (err) {
@@ -127,7 +67,7 @@ const SkillManagement = () => {
   const handleDeleteSkill = async (skillId) => {
     if (!window.confirm("Are you sure you want to delete this skill listing?")) return;
     try {
-      await api.delete(`/skill/${skillId}`).catch(() => null);
+      await api.delete(`/admin/skills/${skillId}`);
       setSkills((prev) => prev.filter((s) => s.id !== skillId));
       toast.success("Skill listing deleted.");
     } catch (err) {
@@ -137,10 +77,7 @@ const SkillManagement = () => {
   };
 
   const filteredSkills = skills.filter((s) => {
-    let skillCat = s.statusCategory;
-    if (!skillCat) {
-      skillCat = !s.isActive ? "inactive" : s.isVerified ? "verified" : "pending";
-    }
+    let skillCat = !s.isActive ? "inactive" : s.isVerified ? "verified" : "pending";
     const matchesCategory = skillCat === category;
     const matchesSearch = s.name?.toLowerCase().includes(searchQuery.toLowerCase()) || s.category?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -148,35 +85,15 @@ const SkillManagement = () => {
 
   const getCount = (catKey) =>
     skills.filter((s) => {
-      let skillCat = s.statusCategory;
-      if (!skillCat) {
-        skillCat = !s.isActive ? "inactive" : s.isVerified ? "verified" : "pending";
-      }
+      let skillCat = !s.isActive ? "inactive" : s.isVerified ? "verified" : "pending";
       return skillCat === catKey;
     }).length;
 
   return (
     <div className="w-full flex flex-col gap-6">
       
-      {/* Domain-specific Skill Category Buttons */}
+      {/* Skill Category Buttons */}
       <div className="bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl p-3 rounded-2xl flex items-center gap-3 shadow-lg">
-        {/* Verified Skills */}
-        <button
-          onClick={() => setCategory("verified")}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            category === "verified"
-              ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/25"
-              : "bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800/80"
-          }`}
-        >
-          <ShieldCheck className="w-4 h-4 text-emerald-300" />
-          <span>Verified Skills</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-950/80 text-emerald-400 font-extrabold border border-emerald-500/30">
-            {getCount("verified")}
-          </span>
-        </button>
-
-        {/* Pending Verification */}
         <button
           onClick={() => setCategory("pending")}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -192,7 +109,21 @@ const SkillManagement = () => {
           </span>
         </button>
 
-        {/* Inactive / Hidden */}
+        <button
+          onClick={() => setCategory("verified")}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            category === "verified"
+              ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-600/25"
+              : "bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800/80"
+          }`}
+        >
+          <ShieldCheck className="w-4 h-4 text-emerald-300" />
+          <span>Verified Skills</span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-950/80 text-emerald-400 font-extrabold border border-emerald-500/30">
+            {getCount("verified")}
+          </span>
+        </button>
+
         <button
           onClick={() => setCategory("inactive")}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -209,7 +140,7 @@ const SkillManagement = () => {
         </button>
       </div>
 
-      {/* Search & Action Bar */}
+      {/* Search & Refresh Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
@@ -272,7 +203,7 @@ const SkillManagement = () => {
                 </div>
               </div>
 
-              {/* Card Action Controls */}
+              {/* Action Controls */}
               <div className="pt-3 border-t border-slate-800/70 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   {!s.isVerified && (
@@ -281,7 +212,7 @@ const SkillManagement = () => {
                       className="px-3 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800/60 text-emerald-300 text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
                     >
                       <Check className="w-3.5 h-3.5" />
-                      <span>Verify</span>
+                      <span>Approve & Verify</span>
                     </button>
                   )}
                   <button

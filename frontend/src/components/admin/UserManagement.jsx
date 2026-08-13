@@ -3,14 +3,11 @@ import api from "../../context/apiinstance";
 import {
   Users,
   CheckCircle2,
-  XCircle,
   Search,
-  ShieldCheck,
   Trash2,
   UserCheck,
   UserX,
   Mail,
-  Phone,
   MapPin,
   Loader2,
   RefreshCw,
@@ -20,7 +17,6 @@ import {
 import toast from "react-hot-toast";
 
 const UserManagement = () => {
-  // Tailored User categories: "active" | "deactive" | "deleted"
   const [category, setCategory] = useState("active");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,60 +29,12 @@ const UserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/user/all").catch(() => null);
-      if (res?.data?.users) {
-        setUsers(res.data.users);
-      } else {
-        // Fallback dataset mapped to Prisma User model fields
-        setUsers([
-          {
-            id: "u1",
-            fname: "Alex",
-            lname: "Rivera",
-            email: "alex.rivera@innov.io",
-            role: "USER",
-            isactive: "ACTIVE",
-            phone: "+1 555-0192",
-            city: "San Francisco, CA",
-            createdAt: new Date().toISOString()
-          },
-          {
-            id: "u2",
-            fname: "Sarah",
-            lname: "Chen",
-            email: "sarah.chen@tech.org",
-            role: "ADMIN",
-            isactive: "ACTIVE",
-            phone: "+1 555-0144",
-            city: "Seattle, WA",
-            createdAt: new Date().toISOString()
-          },
-          {
-            id: "u3",
-            fname: "David",
-            lname: "Miller",
-            email: "david.m@devs.net",
-            role: "USER",
-            isactive: "DEACTIVE",
-            phone: "+1 555-0188",
-            city: "Austin, TX",
-            createdAt: new Date().toISOString()
-          },
-          {
-            id: "u4",
-            fname: "Elena",
-            lname: "Rostova",
-            email: "elena@designcraft.com",
-            role: "USER",
-            isactive: "DELETED",
-            phone: "+1 555-0177",
-            city: "Chicago, IL",
-            createdAt: new Date().toISOString()
-          }
-        ]);
-      }
+      const res = await api.get("/admin/users");
+      setUsers(res.data?.users || []);
     } catch (err) {
-      console.error("Fetch users error:", err);
+      console.error("Fetch admin users error:", err);
+      setUsers([]);
+      toast.error("Could not load users list.");
     } finally {
       setLoading(false);
     }
@@ -94,11 +42,11 @@ const UserManagement = () => {
 
   const handleStatusChange = async (userId, newStatus) => {
     try {
-      await api.put(`/user/${userId}/status`, { status: newStatus }).catch(() => null);
+      await api.put(`/admin/users/${userId}/status`, { status: newStatus });
       setUsers((prev) =>
         prev.map((u) => (u.id === userId ? { ...u, isactive: newStatus } : u))
       );
-      toast.success(`User account status set to ${newStatus}!`);
+      toast.success(`User status updated to ${newStatus}!`);
     } catch (err) {
       console.error("Update user status error:", err);
       toast.error("Failed to update user status.");
@@ -108,7 +56,7 @@ const UserManagement = () => {
   const handleDeleteUser = async (userId) => {
     if (!window.confirm("Are you sure you want to permanently delete this user account?")) return;
     try {
-      await api.delete(`/user/${userId}`).catch(() => null);
+      await api.delete(`/admin/users/${userId}`);
       setUsers((prev) => prev.filter((u) => u.id !== userId));
       toast.success("User account deleted.");
     } catch (err) {
@@ -131,9 +79,8 @@ const UserManagement = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       
-      {/* Domain-specific User Category Buttons */}
+      {/* Category Buttons */}
       <div className="bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl p-3 rounded-2xl flex items-center gap-3 shadow-lg">
-        {/* Active Users */}
         <button
           onClick={() => setCategory("active")}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -149,7 +96,6 @@ const UserManagement = () => {
           </span>
         </button>
 
-        {/* Deactivated Users */}
         <button
           onClick={() => setCategory("deactive")}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -165,7 +111,6 @@ const UserManagement = () => {
           </span>
         </button>
 
-        {/* Deleted Accounts */}
         <button
           onClick={() => setCategory("deleted")}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
@@ -182,7 +127,7 @@ const UserManagement = () => {
         </button>
       </div>
 
-      {/* Search & Action Bar */}
+      {/* Search & Refresh Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
@@ -250,7 +195,7 @@ const UserManagement = () => {
                 </div>
               </div>
 
-              {/* Card Action Controls */}
+              {/* Actions */}
               <div className="pt-3 border-t border-slate-800/70 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   {category !== "active" && (

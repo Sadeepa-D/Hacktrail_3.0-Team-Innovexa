@@ -8,7 +8,9 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/user.routes");
 const skillRoutes = require("./routes/skill.routes");
 const opportunityRoutes = require("./routes/opportunity.routes");
-
+const adminRoutes = require("./routes/admin.routes");
+const searchRoutes = require("./routes/search.routes");
+const messageRoutes = require("./routes/message.routes");
 
 const app = express();
 
@@ -56,6 +58,9 @@ app.use("/api/user", userRoutes);
 app.use("/api/auth", userRoutes);         // Alias for backward compatibility
 app.use("/api/skills", skillRoutes);
 app.use("/api/opportunities", opportunityRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/search", searchRoutes);
+app.use("/api/messages", messageRoutes);
 
 // Health Check Route
 app.get("/health", (req, res) => {
