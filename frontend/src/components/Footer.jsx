@@ -10,6 +10,10 @@ import {
   ShieldCheck,
   Compass,
   Code,
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -169,7 +173,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Navigation Links */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 lg:justify-self-center">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Platform
             </h3>
@@ -203,7 +207,7 @@ const Footer = () => {
           </div>
 
           {/* Account & Resources */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 lg:justify-self-center">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
               Account & Join
             </h3>
@@ -243,39 +247,31 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter Subscription */}
-          <div className="lg:col-span-4">
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-2">
-              Stay Updated
+          {/* Contact Us */}
+          <div className="lg:col-span-4 lg:justify-self-end">
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+              Contact Us
             </h3>
-            <p className="text-slate-400 text-sm mb-4">
-              Subscribe to get the latest tech skill trends and career updates
-              directly in your inbox.
-            </p>
-            <form onSubmit={handleSubscribe} className="space-y-3">
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-2.5 bg-slate-900/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-1.5 top-1.5 bottom-1.5 px-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md cursor-pointer"
-                >
-                  <span>Subscribe</span>
-                  <Send className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              {subscribed && (
-                <div className="flex items-center gap-2 text-emerald-400 text-xs mt-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Successfully subscribed to updates!</span>
-                </div>
-              )}
-            </form>
+            <ul className="space-y-3 text-sm text-slate-400">
+              <li className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-violet-400 shrink-0 mt-0.5" />
+                <span>123 Galle Road,<br />Matara, TC 10101</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Phone className="w-4 h-4 text-violet-400 shrink-0" />
+                <span>+94 (11) 234-5678</span>
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-violet-400 shrink-0" />
+                <a href="mailto:hello@skillora.com" className="hover:text-violet-400 transition-colors">
+                  skillora@gmail.com
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <Clock className="w-4 h-4 text-violet-400 shrink-0" />
+                <span>Mon - Fri, 9:00 AM - 6:00 PM</span>
+              </li>
+            </ul>
           </div>
         </div>
 
