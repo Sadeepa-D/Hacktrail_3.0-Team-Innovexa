@@ -128,7 +128,7 @@ const SkillCategoryDetail = () => {
 
       <Header />
 
-      <main className="pt-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10 flex-1">
+      <main className="pt-44 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10 flex-1">
         {/* Navigation & Search Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <Link
