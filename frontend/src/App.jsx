@@ -5,12 +5,14 @@ import Login from "./pages/login";
 import Register from "./pages/register";
 import Home from "./pages/home";
 import Skills from "./pages/skills";
+import SkillCategoryDetail from "./pages/SkillCategoryDetail";
 import Opportunities from "./pages/opportunities";
 import PostSkillPage from "./pages/PostSkillPage";
 import PostOpportunityPage from "./pages/PostOpportunityPage";
 import Profile from "./pages/profile";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ChatMessengerPopup from "./components/ChatMessengerPopup";
 
 const App = () => {
   return (
@@ -35,6 +37,7 @@ const App = () => {
         {/* Main pages */}
         <Route path="/home" element={<Home />} />
         <Route path="/skills" element={<Skills />} />
+        <Route path="/skills/:category" element={<SkillCategoryDetail />} />
         <Route path="/opportunities" element={<Opportunities />} />
         <Route path="/profile/:id" element={<UserProfilePage />} />
 
@@ -47,6 +50,9 @@ const App = () => {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="*" element={<Navigate to="/home" replace />} />
       </Routes>
+
+      {/* Global Bottom-Right Direct Text Messenger Widget */}
+      <ChatMessengerPopup />
     </>
   );
 };
