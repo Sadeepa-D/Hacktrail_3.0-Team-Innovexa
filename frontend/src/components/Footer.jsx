@@ -100,7 +100,7 @@ const Footer = () => {
 
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-slate-800/80">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-4 border-b border-slate-800/80">
           {/* Brand & Bio Column */}
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
@@ -198,14 +198,7 @@ const Footer = () => {
                   Opportunities
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/contacts"
-                  className="text-slate-400 hover:text-violet-400 transition-colors"
-                >
-                  Contacts
-                </Link>
-              </li>
+           
             </ul>
           </div>
 
@@ -287,7 +280,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar: Rights, Status & Back To Top */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex flex-wrap items-center gap-4 text-center md:text-left">
             <span>
               &copy; {new Date().getFullYear()}{" "}

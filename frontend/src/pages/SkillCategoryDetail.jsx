@@ -111,7 +111,7 @@ const SkillCategoryDetail = () => {
 
       <Header />
 
-      <main className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10 flex-1">
+      <main className="pt-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10 flex-1">
         {/* Navigation & Search Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <Link
@@ -220,9 +220,21 @@ const SkillCategoryDetail = () => {
                         </span>
                       </div>
 
-                      {skill.hourlyRate != null && (
+                      {(skill.hourlyRate != null || skill.rateType) && (
                         <span className="text-xs font-bold text-emerald-400 shrink-0">
-                          ${skill.hourlyRate}/hr
+                          {skill.rateType === "FREE" || skill.hourlyRate === 0
+                            ? "Free"
+                            : skill.rateType === "NEGOTIABLE"
+                            ? "Negotiable"
+                            : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
+                                skill.rateType === "FIXED"
+                                  ? " / Project"
+                                  : skill.rateType === "DAILY"
+                                  ? " / Day"
+                                  : skill.rateType === "MONTHLY"
+                                  ? " / Month"
+                                  : " / Hour"
+                              }`}
                         </span>
                       )}
                     </div>

@@ -74,7 +74,7 @@ const Skills = () => {
 
       <Header />
 
-      <main className="pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 flex-1">
+      <main className="pt-36 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 flex-1">
         <div className="text-center mb-16 opacity-0 animate-fade-in-up">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50 text-violet-300 text-xs font-semibold mb-4 backdrop-blur-sm shadow-sm">
             <span>Browse Categories</span>

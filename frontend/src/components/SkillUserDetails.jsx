@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   X, Mail, Phone, BookOpen, Briefcase, Clock,
-  Award, DollarSign, MessageSquare, ExternalLink, User, ShieldCheck
+  Award, DollarSign, MessageSquare, ExternalLink, User, ShieldCheck, Tag
 } from "lucide-react";
 import { openDirectMessageWithUser } from "./ChatMessengerPopup";
 import { useAuth } from "../context/authcontext";
@@ -98,9 +98,22 @@ const SkillUserDetails = ({ selectedSkill, onClose }) => {
 
               {/* Badges / Metrics */}
               <div className="flex items-center gap-4 text-xs text-slate-300 flex-wrap mb-4 bg-slate-950/60 p-3 rounded-2xl border border-slate-800/60">
-                {selectedSkill.hourlyRate != null && (
+                {(selectedSkill.hourlyRate != null || selectedSkill.rateType) && (
                   <span className="text-emerald-400 font-bold flex items-center gap-1">
-                    <DollarSign className="w-3.5 h-3.5" /> ${selectedSkill.hourlyRate}/hr
+                    <Tag className="w-3.5 h-3.5" />
+                    {selectedSkill.rateType === "FREE" || selectedSkill.hourlyRate === 0
+                      ? "Free Service"
+                      : selectedSkill.rateType === "NEGOTIABLE"
+                      ? "Negotiable"
+                      : `Rs. ${selectedSkill.hourlyRate != null ? `${selectedSkill.hourlyRate}` : ""}${
+                          selectedSkill.rateType === "FIXED"
+                            ? " / Project"
+                            : selectedSkill.rateType === "DAILY"
+                            ? " / Day"
+                            : selectedSkill.rateType === "MONTHLY"
+                            ? " / Month"
+                            : " / Hour"
+                        }`}
                   </span>
                 )}
                 {selectedSkill.availability && (
