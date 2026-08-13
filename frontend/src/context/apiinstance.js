@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: import.meta.env.BASE_API_URL,
+  baseURL: import.meta.env.VITE_BASE_API_URL || "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 
-// Request interceptor
+// Request interceptor: attach token if present
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -19,19 +18,18 @@ api.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  },
+  }
 );
 
-// Response interceptor
+// Response interceptor: handle 401 cleanly without forcing browser refresh loops
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
-      window.location.href = "/login";
     }
     return Promise.reject(error);
-  },
+  }
 );
 
 export default api;
