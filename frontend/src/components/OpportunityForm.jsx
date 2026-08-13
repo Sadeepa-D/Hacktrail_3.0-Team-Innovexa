@@ -398,8 +398,8 @@ const OpportunityForm = ({
           {/* Min Salary */}
           <div className="flex flex-col gap-2">
             <label htmlFor="opp-salary" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
-              <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
-              Salary / Pay Min ($)
+              <Tag className="w-3.5 h-3.5 text-indigo-400" />
+              Salary / Pay Min (Rs.)
             </label>
             <input
               id="opp-salary"
@@ -407,7 +407,7 @@ const OpportunityForm = ({
               step="0.01"
               min="0"
               name="salary"
-              placeholder="e.g. 3000"
+              placeholder="e.g. 50000"
               value={formData.salary}
               onChange={handleChange}
               className={`w-full px-4 py-3 bg-slate-950/70 rounded-xl border text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 transition-all ${
@@ -427,8 +427,8 @@ const OpportunityForm = ({
           {/* Max Salary */}
           <div className="flex flex-col gap-2">
             <label htmlFor="opp-salary-max" className="text-xs font-semibold uppercase text-slate-300 tracking-wider flex items-center gap-1.5">
-              <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
-              Salary Max ($)
+              <Tag className="w-3.5 h-3.5 text-indigo-400" />
+              Salary Max (Rs.)
             </label>
             <input
               id="opp-salary-max"

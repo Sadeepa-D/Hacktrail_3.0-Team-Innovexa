@@ -83,9 +83,15 @@ const adminOpportunityController = {
         });
       }
 
+      const data = { status: uppercaseStatus };
+      if (uppercaseStatus === "OPEN") {
+        data.isVerified = true;
+        data.publishedAt = new Date();
+      }
+
       const updatedOpportunity = await prisma.opportunity.update({
         where: { id },
-        data: { status: uppercaseStatus },
+        data,
       });
 
       return res.status(200).json({
@@ -106,7 +112,13 @@ const adminOpportunityController = {
       const { isVerified, isFeatured } = req.body;
 
       const data = {};
-      if (isVerified !== undefined) data.isVerified = Boolean(isVerified);
+      if (isVerified !== undefined) {
+        data.isVerified = Boolean(isVerified);
+        if (data.isVerified) {
+          data.status = "OPEN";
+          data.publishedAt = new Date();
+        }
+      }
       if (isFeatured !== undefined) data.isFeatured = Boolean(isFeatured);
 
       const updatedOpportunity = await prisma.opportunity.update({

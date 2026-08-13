@@ -30,7 +30,9 @@ router.delete("/skills/:id", adminSkillController.deleteSkill);
 // ==========================================
 router.get("/opportunities", adminOpportunityController.getAllOpportunities);
 router.patch("/opportunities/:id/status", adminOpportunityController.updateOpportunityStatus);
+router.put("/opportunities/:id/status", adminOpportunityController.updateOpportunityStatus);
 router.put("/opportunities/:id/verify", adminOpportunityController.verifyOpportunity);
+router.patch("/opportunities/:id/verify", adminOpportunityController.verifyOpportunity);
 router.delete("/opportunities/:id", adminOpportunityController.deleteOpportunity);
 
 module.exports = router;

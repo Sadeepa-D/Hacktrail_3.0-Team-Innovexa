@@ -91,10 +91,12 @@ const opportunityController = {
         return res.status(400).json({ error: "Opportunity title is required." });
       }
 
+      const isAdmin = req.user?.role === "ADMIN";
       const data = {
         title: title.trim(),
         userId: req.user.id,
-        status: status ? status.toUpperCase() : "DRAFT",
+        status: isAdmin ? (status ? status.toUpperCase() : "OPEN") : "DRAFT",
+        isVerified: isAdmin,
       };
       if (location) data.location = location.trim();
       if (isRemote !== undefined) data.isRemote = Boolean(isRemote);
