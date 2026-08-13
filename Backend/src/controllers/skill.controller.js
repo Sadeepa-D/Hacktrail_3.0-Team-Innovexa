@@ -11,6 +11,7 @@ const SKILL_PUBLIC_SELECT = {
   description: true,
   qualification: true,
   hourlyRate: true,
+  rateType: true,
   availability: true,
   experience: true,
   isVerified: true,
@@ -62,6 +63,7 @@ const skillController = {
         description,
         qualification,
         hourlyRate,
+        rateType,
         availability,
         experience,
       } = req.body;
@@ -80,7 +82,8 @@ const skillController = {
           category: category || "OTHER",
           description: description?.trim() || null,
           qualification: qualification?.trim() || null,
-          hourlyRate: hourlyRate ? parseFloat(hourlyRate) : null,
+          hourlyRate: hourlyRate !== undefined && hourlyRate !== null ? parseFloat(hourlyRate) : null,
+          rateType: rateType || "HOURLY",
           availability: availability?.trim() || null,
           experience: experience?.trim() || null,
           userId: req.user.id,
@@ -139,7 +142,7 @@ const skillController = {
       });
     } catch (error) {
       console.error("Get All Skills Error:", error);
-      return res.status(500).json({ error: "Failed to fetch skills." });
+      return res.status(500).json({ error: "Failed to fetch skills.", details: error.message });
     }
   },
 
@@ -231,6 +234,7 @@ const skillController = {
         description,
         qualification,
         hourlyRate,
+        rateType,
         availability,
         experience,
         isActive,
@@ -246,7 +250,8 @@ const skillController = {
       if (qualification !== undefined)
         updateData.qualification = qualification?.trim() || null;
       if (hourlyRate !== undefined)
-        updateData.hourlyRate = hourlyRate ? parseFloat(hourlyRate) : null;
+        updateData.hourlyRate = hourlyRate !== null ? parseFloat(hourlyRate) : null;
+      if (rateType !== undefined) updateData.rateType = rateType;
       if (availability !== undefined)
         updateData.availability = availability?.trim() || null;
       if (experience !== undefined)

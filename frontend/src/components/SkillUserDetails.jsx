@@ -98,9 +98,22 @@ const SkillUserDetails = ({ selectedSkill, onClose }) => {
 
               {/* Badges / Metrics */}
               <div className="flex items-center gap-4 text-xs text-slate-300 flex-wrap mb-4 bg-slate-950/60 p-3 rounded-2xl border border-slate-800/60">
-                {selectedSkill.hourlyRate != null && (
+                {(selectedSkill.hourlyRate != null || selectedSkill.rateType) && (
                   <span className="text-emerald-400 font-bold flex items-center gap-1">
-                    <DollarSign className="w-3.5 h-3.5" /> ${selectedSkill.hourlyRate}/hr
+                    <DollarSign className="w-3.5 h-3.5" />
+                    {selectedSkill.rateType === "FREE" || selectedSkill.hourlyRate === 0
+                      ? "Free Service"
+                      : selectedSkill.rateType === "NEGOTIABLE"
+                      ? "Negotiable"
+                      : `${selectedSkill.hourlyRate != null ? `${selectedSkill.hourlyRate}` : ""}${
+                          selectedSkill.rateType === "FIXED"
+                            ? "/project"
+                            : selectedSkill.rateType === "DAILY"
+                            ? "/day"
+                            : selectedSkill.rateType === "MONTHLY"
+                            ? "/mo"
+                            : "/hr"
+                        }`}
                   </span>
                 )}
                 {selectedSkill.availability && (

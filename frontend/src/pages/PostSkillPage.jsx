@@ -221,8 +221,22 @@ const PostSkillPage = () => {
                       )}
 
                       <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
-                        {skill.hourlyRate && (
-                          <span className="text-emerald-400 font-semibold">${skill.hourlyRate}/hr</span>
+                        {(skill.hourlyRate != null || skill.rateType) && (
+                          <span className="text-emerald-400 font-bold bg-emerald-950/40 px-2.5 py-0.5 rounded-md border border-emerald-800/40">
+                            {skill.rateType === "FREE" || skill.hourlyRate === 0
+                              ? "Free Service"
+                              : skill.rateType === "NEGOTIABLE"
+                              ? "Negotiable"
+                              : `${skill.hourlyRate != null ? `$${skill.hourlyRate}` : ""}${
+                                  skill.rateType === "FIXED"
+                                    ? "/project"
+                                    : skill.rateType === "DAILY"
+                                    ? "/day"
+                                    : skill.rateType === "MONTHLY"
+                                    ? "/mo"
+                                    : "/hr"
+                                }`}
+                          </span>
                         )}
                         {skill.availability && <span>⏰ {skill.availability}</span>}
                         {skill.experience && <span>🏅 {skill.experience}</span>}

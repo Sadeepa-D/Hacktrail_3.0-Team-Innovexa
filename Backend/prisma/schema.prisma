@@ -187,6 +187,7 @@ model Skill {
   
   // Additional fields (NEW)
   hourlyRate    Float?        // If offering skill as service
+  rateType      String?       @default("HOURLY") // "HOURLY", "FIXED", "DAILY", "MONTHLY", "FREE", "NEGOTIABLE"
   availability  String?       // "Weekends", "Full-time", etc.
   experience    String?       // Years of experience
   isVerified    Boolean       @default(false)
