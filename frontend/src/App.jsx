@@ -7,6 +7,7 @@ import Home from "./pages/home";
 import Skills from "./pages/skills";
 import SkillCategoryDetail from "./pages/SkillCategoryDetail";
 import Opportunities from "./pages/opportunities";
+import OpportunityDetail from "./pages/OpportunityDetail";
 import PostSkillPage from "./pages/PostSkillPage";
 import PostOpportunityPage from "./pages/PostOpportunityPage";
 import Profile from "./pages/profile";
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/skills/:category" element={<SkillCategoryDetail />} />
         <Route path="/opportunities" element={<Opportunities />} />
         <Route path="/profile/:id" element={<UserProfilePage />} />
+        <Route path="/opportunities/:category" element={<OpportunityDetail />} />
 
         {/* User management routes (Protected) */}
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
