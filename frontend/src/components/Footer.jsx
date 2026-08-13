@@ -243,40 +243,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter Subscription */}
-          <div className="lg:col-span-4">
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-2">
-              Stay Updated
-            </h3>
-            <p className="text-slate-400 text-sm mb-4">
-              Subscribe to get the latest tech skill trends and career updates
-              directly in your inbox.
-            </p>
-            <form onSubmit={handleSubscribe} className="space-y-3">
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-2.5 bg-slate-900/90 border border-slate-800 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
-                />
-                <button
-                  type="submit"
-                  className="absolute right-1.5 top-1.5 bottom-1.5 px-3 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md cursor-pointer"
-                >
-                  <span>Subscribe</span>
-                  <Send className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              {subscribed && (
-                <div className="flex items-center gap-2 text-emerald-400 text-xs mt-2">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Successfully subscribed to updates!</span>
-                </div>
-              )}
-            </form>
-          </div>
+  
         </div>
 
         {/* Bottom Bar: Rights, Status & Back To Top */}
