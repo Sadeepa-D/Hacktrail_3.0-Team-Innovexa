@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
-import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles, Home } from "lucide-react";
 import toast from "react-hot-toast";
 
 const Login = () => {
@@ -45,13 +45,25 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-indigo-500 selection:text-white">
+      {/* Top Left Home Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link
+          to="/home"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-slate-300 hover:text-white text-xs font-semibold transition-all backdrop-blur-md shadow-lg cursor-pointer group"
+          title="Return to Home Page"
+        >
+          <Home className="w-4 h-4 text-violet-400 group-hover:scale-110 transition-transform" />
+          <span>Home</span>
+        </Link>
+      </div>
+
       {/* Animated background blobs */}
       <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/25 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-violet-600/25 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: "1s" }} />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Card */}
-      <div className="w-full max-w-md bg-slate-900/70 border border-slate-800/80 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-2xl shadow-indigo-950/50 relative z-10">
+      <div className="w-full max-w-md bg-slate-900/70 border border-slate-800/80 backdrop-blur-2xl rounded-3xl p-8 md:p-10 shadow-2xl shadow-indigo-950/50 relative z-10 my-8">
         {/* Branding */}
         <div className="flex flex-col items-center mb-8 text-center">
           <div className="h-14 w-14 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-xl shadow-indigo-500/30 mb-4 ring-2 ring-indigo-500/20">

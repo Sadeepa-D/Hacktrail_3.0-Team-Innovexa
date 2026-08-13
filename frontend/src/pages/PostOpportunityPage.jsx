@@ -2,34 +2,64 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
-  Plus, Pencil, Trash2, Loader2, Eye, Briefcase,
-  RefreshCw, ChevronLeft, CheckCircle2, XCircle, Clock,
+  Plus,
+  Pencil,
+  Trash2,
+  Loader2,
+  Eye,
+  Briefcase,
+  RefreshCw,
+  ChevronLeft,
+  CheckCircle2,
+  XCircle,
+  Clock,
 } from "lucide-react";
 import OpportunityForm from "../components/OpportunityForm";
 import {
-  createOpportunity, updateOpportunity, deleteOpportunity,
-  fetchMyOpportunities, updateOpportunityStatus,
+  createOpportunity,
+  updateOpportunity,
+  deleteOpportunity,
+  fetchMyOpportunities,
+  updateOpportunityStatus,
 } from "../lib/opportunitiesApi";
 import { useAuth } from "../context/authcontext";
 
 // ── Badge helpers ──────────────────────────────────────────────────────────────
 const statusConfig = {
-  DRAFT:     { label: "Draft",     cls: "bg-slate-800 text-slate-400 border-slate-700/50" },
-  OPEN:      { label: "Open",      cls: "bg-emerald-900/50 text-emerald-300 border-emerald-700/50" },
-  CLOSED:    { label: "Closed",    cls: "bg-rose-900/50 text-rose-300 border-rose-700/50" },
-  FILLED:    { label: "Filled",    cls: "bg-blue-900/50 text-blue-300 border-blue-700/50" },
-  EXPIRED:   { label: "Expired",   cls: "bg-orange-900/50 text-orange-300 border-orange-700/50" },
-  CANCELLED: { label: "Cancelled", cls: "bg-slate-800 text-slate-500 border-slate-700/40" },
+  DRAFT: {
+    label: "Draft",
+    cls: "bg-slate-800 text-slate-400 border-slate-700/50",
+  },
+  OPEN: {
+    label: "Open",
+    cls: "bg-emerald-900/50 text-emerald-300 border-emerald-700/50",
+  },
+  CLOSED: {
+    label: "Closed",
+    cls: "bg-rose-900/50 text-rose-300 border-rose-700/50",
+  },
+  FILLED: {
+    label: "Filled",
+    cls: "bg-blue-900/50 text-blue-300 border-blue-700/50",
+  },
+  EXPIRED: {
+    label: "Expired",
+    cls: "bg-orange-900/50 text-orange-300 border-orange-700/50",
+  },
+  CANCELLED: {
+    label: "Cancelled",
+    cls: "bg-slate-800 text-slate-500 border-slate-700/40",
+  },
 };
 
 const typeColors = {
-  JOB:       "💼",
-  INTERNSHIP:"🎓",
+  JOB: "💼",
+  INTERNSHIP: "🎓",
   FREELANCE: "💻",
   PART_TIME: "⏳",
   FULL_TIME: "🕒",
   VOLUNTEER: "🤝",
-  PROJECT:   "🚀",
+  PROJECT: "🚀",
 };
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -52,7 +82,9 @@ const PostOpportunityPage = () => {
       const data = await fetchMyOpportunities({ limit: 50 });
       setOpportunities(data.opportunities || []);
     } catch (err) {
-      toast.error(err?.response?.data?.error || "Failed to load opportunities.");
+      toast.error(
+        err?.response?.data?.error || "Failed to load opportunities.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +119,7 @@ const PostOpportunityPage = () => {
       const data = await updateOpportunity(editTarget.id, payload);
       toast.success("Opportunity updated!");
       setOpportunities((prev) =>
-        prev.map((o) => (o.id === editTarget.id ? data.opportunity : o))
+        prev.map((o) => (o.id === editTarget.id ? data.opportunity : o)),
       );
       setView("list");
       setEditTarget(null);
@@ -102,7 +134,12 @@ const PostOpportunityPage = () => {
 
   // ── Delete ───────────────────────────────────────────────────────────────────
   const handleDelete = async (id) => {
-    if (!window.confirm("Delete this opportunity? All applications will also be removed.")) return;
+    if (
+      !window.confirm(
+        "Delete this opportunity? All applications will also be removed.",
+      )
+    )
+      return;
     setDeletingId(id);
     try {
       await deleteOpportunity(id);
@@ -124,8 +161,10 @@ const PostOpportunityPage = () => {
       toast.success(data.message);
       setOpportunities((prev) =>
         prev.map((o) =>
-          o.id === opportunity.id ? { ...o, status: data.opportunity.status } : o
-        )
+          o.id === opportunity.id
+            ? { ...o, status: data.opportunity.status }
+            : o,
+        ),
       );
     } catch (err) {
       toast.error(err?.response?.data?.error || "Failed to update status.");
@@ -143,7 +182,18 @@ const PostOpportunityPage = () => {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        {/* ── Top Left Back Navigation ── */}
+        <div className="mb-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold transition-all backdrop-blur-sm shadow-md cursor-pointer group"
+          >
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-indigo-400" />
+            <span>Back</span>
+          </button>
+        </div>
+
         {/* ── LIST VIEW ── */}
         {view === "list" && (
           <>
@@ -153,8 +203,12 @@ const PostOpportunityPage = () => {
                   <Briefcase className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl font-extrabold text-white tracking-tight">My Opportunities</h1>
-                  <p className="text-slate-400 text-sm">Manage your posted job & opportunity listings</p>
+                  <h1 className="text-2xl font-extrabold text-white tracking-tight">
+                    My Opportunities
+                  </h1>
+                  <p className="text-slate-400 text-sm">
+                    Manage your posted job & opportunity listings
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
@@ -179,14 +233,23 @@ const PostOpportunityPage = () => {
             {isLoading ? (
               <div className="flex flex-col items-center justify-center py-24 gap-3">
                 <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
-                <p className="text-slate-400 text-sm">Loading opportunities...</p>
+                <p className="text-slate-400 text-sm">
+                  Loading opportunities...
+                </p>
               </div>
             ) : opportunities.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 gap-4 text-center">
-                <div className="h-16 w-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-3xl">💼</div>
+                <div className="h-16 w-16 rounded-2xl bg-slate-800/80 flex items-center justify-center text-3xl">
+                  💼
+                </div>
                 <div>
-                  <p className="text-white font-semibold text-lg">No opportunities posted yet</p>
-                  <p className="text-slate-400 text-sm mt-1">Start hiring or finding collaborators by posting an opportunity.</p>
+                  <p className="text-white font-semibold text-lg">
+                    No opportunities posted yet
+                  </p>
+                  <p className="text-slate-400 text-sm mt-1">
+                    Start hiring or finding collaborators by posting an
+                    opportunity.
+                  </p>
                 </div>
                 <button
                   onClick={() => setView("create")}
@@ -211,39 +274,63 @@ const PostOpportunityPage = () => {
                       {/* Left content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap mb-1.5">
-                          <span className="text-base">{typeColors[opp.type] || "💼"}</span>
-                          <h3 className="font-bold text-white text-base truncate">{opp.title}</h3>
-                          <span className={`text-[11px] px-2 py-0.5 rounded-full border font-medium ${sc.cls}`}>
+                          <span className="text-base">
+                            {typeColors[opp.type] || "💼"}
+                          </span>
+                          <h3 className="font-bold text-white text-base truncate">
+                            {opp.title}
+                          </h3>
+                          <span
+                            className={`text-[11px] px-2 py-0.5 rounded-full border font-medium ${sc.cls}`}
+                          >
                             {sc.label}
                           </span>
                         </div>
 
                         {opp.companyname && (
-                          <p className="text-slate-400 text-sm mb-1">🏢 {opp.companyname}</p>
+                          <p className="text-slate-400 text-sm mb-1">
+                            🏢 {opp.companyname}
+                          </p>
                         )}
 
                         {opp.description && (
-                          <p className="text-slate-500 text-sm line-clamp-2 mb-2">{opp.description}</p>
+                          <p className="text-slate-500 text-sm line-clamp-2 mb-2">
+                            {opp.description}
+                          </p>
                         )}
 
                         <div className="flex items-center gap-4 text-xs text-slate-500 flex-wrap">
                           {opp.location && <span>📍 {opp.location}</span>}
-                          {opp.isRemote && <span className="text-indigo-400">🌐 Remote</span>}
+                          {opp.isRemote && (
+                            <span className="text-indigo-400">🌐 Remote</span>
+                          )}
                           {opp.salary != null && (
                             <span className="text-emerald-400 font-semibold">
-                              ${opp.salary}{opp.salaryMax ? ` – $${opp.salaryMax}` : ""} / {opp.salaryType}
+                              ${opp.salary}
+                              {opp.salaryMax
+                                ? ` – $${opp.salaryMax}`
+                                : ""} / {opp.salaryType}
                             </span>
                           )}
                           <span className="flex items-center gap-1">
                             <Eye className="w-3 h-3" /> {opp.viewCount}
                           </span>
-                          {(opp._count?.applications ?? opp.applicationCount) > 0 && (
+                          {(opp._count?.applications ?? opp.applicationCount) >
+                            0 && (
                             <span className="text-violet-400 font-semibold">
-                              {opp._count?.applications ?? opp.applicationCount} applicant(s)
+                              {opp._count?.applications ?? opp.applicationCount}{" "}
+                              applicant(s)
                             </span>
                           )}
                           <span className="text-slate-600">
-                            {new Date(opp.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                            {new Date(opp.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              },
+                            )}
                           </span>
                         </div>
                       </div>
@@ -259,7 +346,11 @@ const PostOpportunityPage = () => {
                               ? "text-emerald-400 hover:text-rose-300 hover:bg-rose-900/30"
                               : "text-slate-500 hover:text-emerald-300 hover:bg-emerald-900/30"
                           }`}
-                          title={opp.status === "OPEN" ? "Close listing" : "Re-open listing"}
+                          title={
+                            opp.status === "OPEN"
+                              ? "Close listing"
+                              : "Re-open listing"
+                          }
                         >
                           {statusChangingId === opp.id ? (
                             <Loader2 className="w-4 h-4 animate-spin" />
@@ -272,7 +363,10 @@ const PostOpportunityPage = () => {
 
                         {/* Edit */}
                         <button
-                          onClick={() => { setEditTarget(opp); setView("edit"); }}
+                          onClick={() => {
+                            setEditTarget(opp);
+                            setView("edit");
+                          }}
                           className="p-2 rounded-xl text-slate-400 hover:text-indigo-300 hover:bg-indigo-900/30 transition-all cursor-pointer"
                           title="Edit"
                         >
@@ -322,7 +416,10 @@ const PostOpportunityPage = () => {
         {view === "edit" && editTarget && (
           <div>
             <button
-              onClick={() => { setView("list"); setEditTarget(null); }}
+              onClick={() => {
+                setView("list");
+                setEditTarget(null);
+              }}
               className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-white mb-6 transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" /> Back to My Opportunities
@@ -330,7 +427,10 @@ const PostOpportunityPage = () => {
             <OpportunityForm
               initialData={editTarget}
               onSubmit={handleUpdate}
-              onCancel={() => { setView("list"); setEditTarget(null); }}
+              onCancel={() => {
+                setView("list");
+                setEditTarget(null);
+              }}
               isSubmitting={isSubmitting}
             />
           </div>
