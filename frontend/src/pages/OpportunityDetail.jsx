@@ -227,7 +227,7 @@ const OpportunityDetail = () => {
                       </span>
                       {opp.salary != null && (
                         <span className="font-bold text-emerald-400 shrink-0">
-                          ${opp.salary}
+                          Rs. {opp.salary}
                         </span>
                       )}
                     </div>

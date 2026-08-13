@@ -42,10 +42,19 @@ const OpportunityManagement = () => {
   const handleStatusChange = async (oppId, newStatus) => {
     try {
       await api.patch(`/admin/opportunities/${oppId}/status`, { status: newStatus });
+      if (newStatus === "OPEN") {
+        await api.patch(`/admin/opportunities/${oppId}/verify`, { isVerified: true });
+      }
       setOpportunities((prev) =>
-        prev.map((o) => (o.id === oppId ? { ...o, status: newStatus } : o))
+        prev.map((o) =>
+          o.id === oppId ? { ...o, status: newStatus, isVerified: newStatus === "OPEN" } : o
+        )
       );
-      toast.success(`Opportunity status changed to ${newStatus}!`);
+      toast.success(
+        newStatus === "OPEN"
+          ? "Opportunity approved & published to public feeds!"
+          : `Opportunity status updated to ${newStatus}.`
+      );
     } catch (err) {
       console.error("Update opportunity status error:", err);
       toast.error("Failed to update opportunity status.");
@@ -66,11 +75,12 @@ const OpportunityManagement = () => {
 
   const filteredOpportunities = opportunities.filter((o) => {
     const oppStatus = (o.status || "DRAFT").toLowerCase();
+    const isVerified = Boolean(o.isVerified);
     let matchesCategory = false;
     if (category === "open") {
-      matchesCategory = oppStatus === "open";
+      matchesCategory = isVerified && oppStatus === "open";
     } else if (category === "draft") {
-      matchesCategory = oppStatus === "draft" || oppStatus === "pending";
+      matchesCategory = !isVerified || oppStatus === "draft" || oppStatus === "pending";
     } else if (category === "closed") {
       matchesCategory = oppStatus === "closed" || oppStatus === "filled" || oppStatus === "expired" || oppStatus === "cancelled";
     }
@@ -85,8 +95,9 @@ const OpportunityManagement = () => {
   const getCount = (catKey) =>
     opportunities.filter((o) => {
       const oppStatus = (o.status || "DRAFT").toLowerCase();
-      if (catKey === "open") return oppStatus === "open";
-      if (catKey === "draft") return oppStatus === "draft" || oppStatus === "pending";
+      const isVerified = Boolean(o.isVerified);
+      if (catKey === "open") return isVerified && oppStatus === "open";
+      if (catKey === "draft") return !isVerified || oppStatus === "draft" || oppStatus === "pending";
       if (catKey === "closed") return oppStatus === "closed" || oppStatus === "filled" || oppStatus === "expired" || oppStatus === "cancelled";
       return false;
     }).length;
@@ -199,8 +210,10 @@ const OpportunityManagement = () => {
                       </span>
                     )}
                   </div>
-                  {o.salary && (
-                    <span className="text-emerald-400 text-xs font-bold">${o.salary.toLocaleString()}</span>
+                  {o.salary != null && (
+                    <span className="text-emerald-400 text-xs font-bold">
+                      Rs. {o.salary.toLocaleString()}{o.salaryMax ? ` – Rs. ${o.salaryMax.toLocaleString()}` : ""}
+                    </span>
                   )}
                 </div>
 

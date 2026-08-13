@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   X, Mail, Phone, Building2, MapPin, DollarSign,
-  ShieldCheck, MessageSquare, Send, Award, Clock, ExternalLink
+  ShieldCheck, MessageSquare, Send, Award, Clock, ExternalLink, Tag
 } from "lucide-react";
 import { openDirectMessageWithUser } from "./ChatMessengerPopup";
 import { useAuth } from "../context/authcontext";
@@ -120,8 +120,8 @@ const OpportunityUserModal = ({ selectedOpp, onClose }) => {
             </span>
             {selectedOpp.salary != null && (
               <span className="flex items-center gap-1 text-emerald-400 font-bold">
-                <DollarSign className="w-4 h-4" /> ${selectedOpp.salary}
-                {selectedOpp.salaryMax ? ` - $${selectedOpp.salaryMax}` : ""}
+                <Tag className="w-4 h-4" /> Rs. {selectedOpp.salary}
+                {selectedOpp.salaryMax ? ` - Rs. ${selectedOpp.salaryMax}` : ""}
                 {selectedOpp.salaryType ? ` / ${selectedOpp.salaryType.toLowerCase()}` : ""}
               </span>
             )}
