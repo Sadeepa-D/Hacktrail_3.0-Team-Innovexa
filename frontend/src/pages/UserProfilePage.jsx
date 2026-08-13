@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  User, MapPin, Calendar, Sparkles, Briefcase,
-  Award, Clock, Loader2, ArrowLeft,
-  ShieldCheck, MessageSquare
+  User,
+  MapPin,
+  Calendar,
+  Sparkles,
+  Briefcase,
+  Award,
+  Clock,
+  Loader2,
+  ArrowLeft,
+  ShieldCheck,
+  MessageSquare,
 } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -78,7 +86,9 @@ const UserProfilePage = () => {
         <Header />
         <main className="pt-32 pb-16 px-4 text-center">
           <h2 className="text-2xl font-bold text-white mb-2">User Not Found</h2>
-          <p className="text-slate-400 mb-6">The requested user profile does not exist or has been removed.</p>
+          <p className="text-slate-400 mb-6">
+            The requested user profile does not exist or has been removed.
+          </p>
           <button
             onClick={() => navigate("/home")}
             className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-sm transition-all"
@@ -173,14 +183,18 @@ const UserProfilePage = () => {
                     <span className="text-lg font-bold text-white block">
                       {profileUser.skills?.length || 0}
                     </span>
-                    <span className="text-xs text-slate-400 uppercase tracking-wider">Posted Skills</span>
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">
+                      Posted Skills
+                    </span>
                   </div>
                   <div className="h-8 w-px bg-slate-800" />
                   <div className="text-center sm:text-left">
                     <span className="text-lg font-bold text-white block">
                       {profileUser.opportunities?.length || 0}
                     </span>
-                    <span className="text-xs text-slate-400 uppercase tracking-wider">Opportunities</span>
+                    <span className="text-xs text-slate-400 uppercase tracking-wider">
+                      Opportunities
+                    </span>
                   </div>
                 </div>
               </div>
@@ -198,150 +212,6 @@ const UserProfilePage = () => {
             )}
           </div>
         </div>
-
-        {/* Navigation Tabs */}
-        <div className="flex items-center gap-3 border-b border-slate-800/80 mb-6">
-          <button
-            onClick={() => setActiveTab("skills")}
-            className={`pb-3.5 px-4 font-bold text-sm transition-all border-b-2 cursor-pointer flex items-center gap-2 ${
-              activeTab === "skills"
-                ? "border-violet-500 text-white"
-                : "border-transparent text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            <Sparkles className="w-4 h-4" />
-            Skills ({profileUser.skills?.length || 0})
-          </button>
-          <button
-            onClick={() => setActiveTab("opportunities")}
-            className={`pb-3.5 px-4 font-bold text-sm transition-all border-b-2 cursor-pointer flex items-center gap-2 ${
-              activeTab === "opportunities"
-                ? "border-indigo-500 text-white"
-                : "border-transparent text-slate-400 hover:text-slate-200"
-            }`}
-          >
-            <Briefcase className="w-4 h-4" />
-            Opportunities ({profileUser.opportunities?.length || 0})
-          </button>
-        </div>
-
-        {/* Tab 1: Skills Section */}
-        {activeTab === "skills" && (
-          <div>
-            {!profileUser.skills || profileUser.skills.length === 0 ? (
-              <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-12 text-center">
-                <div className="text-3xl mb-2">💡</div>
-                <h3 className="text-white font-semibold mb-1">No Skills Posted Yet</h3>
-                <p className="text-slate-400 text-sm">This user has not listed any active skills profile.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {profileUser.skills.map((skill) => (
-                  <div
-                    key={skill.id}
-                    className="bg-slate-900/60 border border-slate-800/80 backdrop-blur-md rounded-2xl p-5 hover:border-violet-500/40 transition-all flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-white text-base leading-snug">{skill.name}</h4>
-                        <span
-                          className={`text-[10px] px-2 py-0.5 rounded-full border font-semibold shrink-0 ${
-                            categoryColors[skill.category] || categoryColors.OTHER
-                          }`}
-                        >
-                          {skill.category}
-                        </span>
-                      </div>
-
-                      {skill.description && (
-                        <p className="text-slate-400 text-sm line-clamp-3 mb-4">{skill.description}</p>
-                      )}
-
-                      {skill.qualification && (
-                        <p className="text-xs text-slate-400 mb-3 bg-slate-950/50 p-2.5 rounded-xl border border-slate-800/60">
-                          🎓 <span className="text-slate-300 font-medium">{skill.qualification}</span>
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-slate-800/60 mt-2">
-                      {skill.hourlyRate != null ? (
-                        <span className="text-emerald-400 font-bold">${skill.hourlyRate}/hr</span>
-                      ) : (
-                        <span>Rate negotiable</span>
-                      )}
-                      {skill.availability && (
-                        <span className="flex items-center gap-1 text-slate-400">
-                          <Clock className="w-3 h-3" /> {skill.availability}
-                        </span>
-                      )}
-                      {skill.experience && (
-                        <span className="flex items-center gap-1 text-slate-400">
-                          <Award className="w-3 h-3 text-violet-400" /> {skill.experience}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Tab 2: Opportunities Section */}
-        {activeTab === "opportunities" && (
-          <div>
-            {!profileUser.opportunities || profileUser.opportunities.length === 0 ? (
-              <div className="bg-slate-900/50 border border-slate-800/60 rounded-2xl p-12 text-center">
-                <div className="text-3xl mb-2">💼</div>
-                <h3 className="text-white font-semibold mb-1">No Opportunities Posted</h3>
-                <p className="text-slate-400 text-sm">This user has no active job or opportunity postings.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {profileUser.opportunities.map((opp) => (
-                  <div
-                    key={opp.id}
-                    className="bg-slate-900/60 border border-slate-800/80 backdrop-blur-md rounded-2xl p-5 hover:border-indigo-500/40 transition-all flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4 className="font-bold text-white text-base leading-snug">{opp.title}</h4>
-                        <span className="text-xs px-2.5 py-0.5 rounded-full bg-indigo-950/60 text-indigo-300 border border-indigo-700/50 font-semibold shrink-0">
-                          {opp.type}
-                        </span>
-                      </div>
-
-                      {opp.companyname && (
-                        <p className="text-slate-400 text-xs font-semibold mb-2">🏢 {opp.companyname}</p>
-                      )}
-
-                      {opp.description && (
-                        <p className="text-slate-400 text-sm line-clamp-3 mb-4">{opp.description}</p>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs text-slate-400 pt-3 border-t border-slate-800/60 mt-2">
-                      {opp.salary != null ? (
-                        <span className="text-emerald-400 font-bold">
-                          ${opp.salary}{opp.salaryMax ? ` – $${opp.salaryMax}` : ""} / {opp.salaryType}
-                        </span>
-                      ) : (
-                        <span>Compensation negotiable</span>
-                      )}
-                      {opp.isRemote && (
-                        <span className="text-indigo-400 font-medium">🌐 Remote</span>
-                      )}
-                      {opp.location && (
-                        <span className="text-slate-400 truncate max-w-[120px]">📍 {opp.location}</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
       </main>
 
       <Footer />
