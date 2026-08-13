@@ -4,8 +4,19 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { fetchAllSkills } from "../lib/skillsApi";
 import {
-  ArrowLeft, User, Phone, Search, Loader2, Sparkles,
-  DollarSign, Clock, Award, Tag, Briefcase, ChevronRight, ShieldCheck
+  ArrowLeft,
+  User,
+  Phone,
+  Search,
+  Loader2,
+  Sparkles,
+  DollarSign,
+  Clock,
+  Award,
+  Tag,
+  Briefcase,
+  ChevronRight,
+  ShieldCheck,
 } from "lucide-react";
 import SkillUserDetails from "../components/SkillUserDetails";
 import toast from "react-hot-toast";
@@ -13,42 +24,48 @@ import toast from "react-hot-toast";
 const CATEGORY_META = {
   TECHNICAL: {
     name: "Technical & Software",
-    description: "Programming, web development, software engineering, and data analysis.",
+    description:
+      "Programming, web development, software engineering, and data analysis.",
     accentColor: "from-blue-500 to-cyan-400",
     bgGlow: "bg-blue-600/15",
     shadowColor: "shadow-blue-500/20",
   },
   DESIGN: {
     name: "UI/UX & Creative Design",
-    description: "Graphic design, UI/UX design, video editing, 3D modeling, and digital art.",
+    description:
+      "Graphic design, UI/UX design, video editing, 3D modeling, and digital art.",
     accentColor: "from-pink-500 to-rose-400",
     bgGlow: "bg-pink-600/15",
     shadowColor: "shadow-pink-500/20",
   },
   COMMUNICATION: {
     name: "Communication & PR",
-    description: "Content writing, public relations, public speaking, and translation.",
+    description:
+      "Content writing, public relations, public speaking, and translation.",
     accentColor: "from-emerald-500 to-teal-400",
     bgGlow: "bg-emerald-600/15",
     shadowColor: "shadow-emerald-500/20",
   },
   MANAGEMENT: {
     name: "Project & Product Management",
-    description: "Agile project management, product strategy, leadership, and administration.",
+    description:
+      "Agile project management, product strategy, leadership, and administration.",
     accentColor: "from-orange-500 to-amber-400",
     bgGlow: "bg-orange-600/15",
     shadowColor: "shadow-orange-500/20",
   },
   LANGUAGE: {
     name: "Languages & Linguistics",
-    description: "Bilingual translation, interpretation, and language teaching.",
+    description:
+      "Bilingual translation, interpretation, and language teaching.",
     accentColor: "from-violet-500 to-purple-400",
     bgGlow: "bg-violet-600/15",
     shadowColor: "shadow-violet-500/20",
   },
   SOFT_SKILL: {
     name: "Soft Skills & Leadership",
-    description: "Teamwork, problem-solving, empathy, public speaking, and adaptability.",
+    description:
+      "Teamwork, problem-solving, empathy, public speaking, and adaptability.",
     accentColor: "from-yellow-500 to-orange-400",
     bgGlow: "bg-yellow-600/15",
     shadowColor: "shadow-yellow-500/20",
@@ -111,7 +128,7 @@ const SkillCategoryDetail = () => {
 
       <Header />
 
-      <main className="pt-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10 flex-1">
+      <main className="pt-44 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full relative z-10 flex-1">
         {/* Navigation & Search Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <Link
@@ -145,7 +162,9 @@ const SkillCategoryDetail = () => {
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4">
             Available{" "}
-            <span className={`text-transparent bg-clip-text bg-gradient-to-r ${meta.accentColor}`}>
+            <span
+              className={`text-transparent bg-clip-text bg-gradient-to-r ${meta.accentColor}`}
+            >
               {meta.name.split(" ")[0]} Skills
             </span>
           </h1>
@@ -158,7 +177,9 @@ const SkillCategoryDetail = () => {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-24 gap-3">
             <Loader2 className="w-8 h-8 text-violet-500 animate-spin" />
-            <p className="text-slate-400 text-sm">Fetching skills from database...</p>
+            <p className="text-slate-400 text-sm">
+              Fetching skills from database...
+            </p>
           </div>
         ) : skills.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -177,7 +198,9 @@ const SkillCategoryDetail = () => {
                   <div>
                     {/* Header: Icon & Category */}
                     <div className="flex items-center justify-between mb-4">
-                      <div className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${meta.accentColor} flex items-center justify-center text-white shadow-lg transform group-hover:scale-105 transition-transform`}>
+                      <div
+                        className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${meta.accentColor} flex items-center justify-center text-white shadow-lg transform group-hover:scale-105 transition-transform`}
+                      >
                         <Sparkles className="w-5 h-5" />
                       </div>
                       <div className="flex items-center gap-1.5">
@@ -225,16 +248,16 @@ const SkillCategoryDetail = () => {
                           {skill.rateType === "FREE" || skill.hourlyRate === 0
                             ? "Free"
                             : skill.rateType === "NEGOTIABLE"
-                            ? "Negotiable"
-                            : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
-                                skill.rateType === "FIXED"
-                                  ? " / Project"
-                                  : skill.rateType === "DAILY"
-                                  ? " / Day"
-                                  : skill.rateType === "MONTHLY"
-                                  ? " / Month"
-                                  : " / Hour"
-                              }`}
+                              ? "Negotiable"
+                              : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
+                                  skill.rateType === "FIXED"
+                                    ? " / Project"
+                                    : skill.rateType === "DAILY"
+                                      ? " / Day"
+                                      : skill.rateType === "MONTHLY"
+                                        ? " / Month"
+                                        : " / Hour"
+                                }`}
                         </span>
                       )}
                     </div>
@@ -242,11 +265,13 @@ const SkillCategoryDetail = () => {
                     <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
                       {skill.availability ? (
                         <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3 text-slate-500" /> {skill.availability}
+                          <Clock className="w-3 h-3 text-slate-500" />{" "}
+                          {skill.availability}
                         </span>
                       ) : (
                         <span className="flex items-center gap-1">
-                          <Phone className="w-3 h-3 text-slate-500" /> {skill.phonenum}
+                          <Phone className="w-3 h-3 text-slate-500" />{" "}
+                          {skill.phonenum}
                         </span>
                       )}
                       <span className="text-violet-400 font-semibold group-hover:translate-x-0.5 transition-transform flex items-center">
@@ -261,7 +286,9 @@ const SkillCategoryDetail = () => {
         ) : (
           <div className="py-16 text-center text-slate-400 bg-slate-900/40 rounded-3xl border border-slate-800 border-dashed">
             <Search className="w-12 h-12 mx-auto mb-4 text-slate-600 opacity-50" />
-            <h3 className="text-lg font-bold text-white mb-1">No Skills Found</h3>
+            <h3 className="text-lg font-bold text-white mb-1">
+              No Skills Found
+            </h3>
             <p className="text-sm text-slate-400">
               {searchQuery
                 ? `No skills in ${meta.name} matching "${searchQuery}".`
