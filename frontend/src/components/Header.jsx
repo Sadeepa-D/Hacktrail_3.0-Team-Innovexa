@@ -241,20 +241,6 @@ const Header = () => {
               {/* Auth Buttons / Controls */}
               {user ? (
                 <div className="flex items-center gap-3">
-                  {user.role === "ADMIN" && (
-                    <Link
-                      to="/admindashboard"
-                      className="px-3 py-1.5 rounded-xl bg-violet-950/80 hover:bg-violet-900/80 text-violet-300 border border-violet-700/60 text-xs font-bold transition-all flex items-center gap-1.5"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5" />
-                      <span>Admin Center</span>
-                    </Link>
-                  )}
-                  <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
-                    <div className="h-6 w-6 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">
-                      {(user.fname || user.email || "U").charAt(0).toUpperCase()}
-                    </div>
-                    <span className="text-xs font-semibold text-slate-200 truncate max-w-[120px]">
                   {/* Clickable Top Profile Icon & Badge -> Navigates to /profile */}
                   <Link
                     to="/profile"
