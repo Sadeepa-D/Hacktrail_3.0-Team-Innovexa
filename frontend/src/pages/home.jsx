@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Sparkles, ArrowRight, ChevronRight, ChevronLeft } from "lucide-react";
+import Footer from "../components/Footer";
 import Header from "../components/Header";
 
 const slides = [
@@ -59,7 +60,6 @@ const Home = () => {
           
           {/* Left Column: Text & CTAs */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
-            
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
               Turn Your Skills <br />
@@ -147,6 +147,9 @@ const Home = () => {
           
         </div>
       </main>
+
+      {/* Footer Component */}
+      <Footer />
     </div>
   );
 };

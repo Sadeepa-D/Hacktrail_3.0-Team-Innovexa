@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import {
-<<<<<<< HEAD
   Mail, Lock, Eye, EyeOff, UserPlus, Loader2,
   Sparkles, CheckCircle2, User,
-=======
-  Mail,
-  Lock,
-  Eye,
-  EyeOff,
-  UserPlus,
-  Loader2,
-  Sparkles,
-  CheckCircle2,
->>>>>>> origin/Kavindu
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -27,15 +16,8 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { register, user } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
-
-  // Redirect already-authenticated users
-  useEffect(() => {
-    if (user) {
-      navigate("/home", { replace: true });
-    }
-  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,23 +45,25 @@ const Register = () => {
 
     try {
       setIsSubmitting(true);
-      await register(
+      const res = await register(
         email.trim().toLowerCase(),
         password,
         fname.trim() || undefined,
         lname.trim() || undefined
       );
-      toast.success("Account created! Welcome to Team Innovexa 🎉");
-      navigate("/home", { replace: true });
+      toast.success("Account created! Welcome 🎉");
+
+      // Role-based navigation: ADMIN -> /admindashboard, USER -> /home
+      if (res?.user?.role === "ADMIN") {
+        navigate("/admindashboard", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
     } catch (error) {
-<<<<<<< HEAD
-      toast.error(error.message || "Registration failed. Please try again.");
-=======
       console.error("Registration error:", error);
       toast.error(
         error.message || "Failed to create account. Please try again.",
       );
->>>>>>> origin/Kavindu
     } finally {
       setIsSubmitting(false);
     }

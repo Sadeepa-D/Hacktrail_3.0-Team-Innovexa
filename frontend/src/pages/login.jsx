@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import { Mail, Lock, Eye, EyeOff, LogIn, Loader2, Sparkles } from "lucide-react";
@@ -10,15 +10,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { signIn, user } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
-
-  // Redirect already-authenticated users
-  useEffect(() => {
-    if (user) {
-      navigate("/home", { replace: true });
-    }
-  }, [user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,9 +27,15 @@ const Login = () => {
 
     try {
       setIsSubmitting(true);
-      await signIn(email.trim().toLowerCase(), password);
+      const res = await signIn(email.trim().toLowerCase(), password);
       toast.success("Welcome back! Login successful.");
-      navigate("/home", { replace: true });
+
+      // Role-based navigation: ADMIN -> /admindashboard, USER -> /home
+      if (res?.user?.role === "ADMIN") {
+        navigate("/admindashboard", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
     } catch (error) {
       toast.error(error.message || "Invalid credentials. Please try again.");
     } finally {
@@ -96,12 +95,6 @@ const Login = () => {
               <label htmlFor="login-password" className="text-xs font-semibold uppercase text-slate-400 tracking-wider">
                 Password
               </label>
-              <Link
-                to="/forgot-password"
-                className="text-xs text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
-              >
-                Forgot password?
-              </Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
