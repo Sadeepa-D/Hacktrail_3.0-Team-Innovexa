@@ -8,19 +8,15 @@ import {
   Search,
   Trash2,
   Check,
-  Ban,
   Building2,
   MapPin,
-  DollarSign,
-  Globe,
   Loader2,
   RefreshCw
 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const OpportunityManagement = () => {
-  // Tailored Opportunity categories: "open" | "draft" | "closed"
-  const [category, setCategory] = useState("open");
+  const [category, setCategory] = useState("draft");
   const [opportunities, setOpportunities] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,63 +28,12 @@ const OpportunityManagement = () => {
   const fetchOpportunities = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/opportunity").catch(() => null);
-      if (res?.data?.opportunities) {
-        setOpportunities(res.data.opportunities);
-      } else {
-        // Fallback dataset mapped to Prisma Opportunity model fields
-        setOpportunities([
-          {
-            id: "o1",
-            title: "Senior Full Stack Engineer",
-            companyname: "Acme Innovations",
-            type: "FULL_TIME",
-            category: "TECHNOLOGY",
-            location: "San Francisco, CA",
-            isRemote: true,
-            salary: 120000,
-            salaryMax: 150000,
-            status: "OPEN"
-          },
-          {
-            id: "o2",
-            title: "UI/UX Product Design Lead",
-            companyname: "Studio Design Co",
-            type: "FREELANCE",
-            category: "DESIGN",
-            location: "New York, NY",
-            isRemote: true,
-            salary: 4500,
-            salaryMax: 6000,
-            status: "OPEN"
-          },
-          {
-            id: "o3",
-            title: "Junior Backend Developer Intern",
-            companyname: "Innovate AI",
-            type: "INTERNSHIP",
-            category: "TECHNOLOGY",
-            location: "Austin, TX",
-            isRemote: true,
-            salary: 2500,
-            salaryMax: 3500,
-            status: "DRAFT"
-          },
-          {
-            id: "o4",
-            title: "Completed Project Contract",
-            companyname: "Legacy Corp",
-            type: "PROJECT",
-            category: "OTHER",
-            location: "Remote",
-            isRemote: true,
-            salary: 8000,
-            status: "CLOSED"
-          }
-        ]);
-      }
+      const res = await api.get("/admin/opportunities");
+      setOpportunities(res.data?.opportunities || []);
     } catch (err) {
-      console.error("Fetch opportunities error:", err);
+      console.error("Fetch admin opportunities error:", err);
+      setOpportunities([]);
+      toast.error("Could not load opportunities list.");
     } finally {
       setLoading(false);
     }
@@ -96,7 +41,7 @@ const OpportunityManagement = () => {
 
   const handleStatusChange = async (oppId, newStatus) => {
     try {
-      await api.patch(`/opportunity/${oppId}/status`, { status: newStatus }).catch(() => null);
+      await api.patch(`/admin/opportunities/${oppId}/status`, { status: newStatus });
       setOpportunities((prev) =>
         prev.map((o) => (o.id === oppId ? { ...o, status: newStatus } : o))
       );
@@ -110,7 +55,7 @@ const OpportunityManagement = () => {
   const handleDeleteOpportunity = async (oppId) => {
     if (!window.confirm("Are you sure you want to delete this opportunity?")) return;
     try {
-      await api.delete(`/opportunity/${oppId}`).catch(() => null);
+      await api.delete(`/admin/opportunities/${oppId}`);
       setOpportunities((prev) => prev.filter((o) => o.id !== oppId));
       toast.success("Opportunity deleted.");
     } catch (err) {
@@ -120,7 +65,7 @@ const OpportunityManagement = () => {
   };
 
   const filteredOpportunities = opportunities.filter((o) => {
-    const oppStatus = (o.status || "OPEN").toLowerCase();
+    const oppStatus = (o.status || "DRAFT").toLowerCase();
     let matchesCategory = false;
     if (category === "open") {
       matchesCategory = oppStatus === "open";
@@ -139,7 +84,7 @@ const OpportunityManagement = () => {
 
   const getCount = (catKey) =>
     opportunities.filter((o) => {
-      const oppStatus = (o.status || "OPEN").toLowerCase();
+      const oppStatus = (o.status || "DRAFT").toLowerCase();
       if (catKey === "open") return oppStatus === "open";
       if (catKey === "draft") return oppStatus === "draft" || oppStatus === "pending";
       if (catKey === "closed") return oppStatus === "closed" || oppStatus === "filled" || oppStatus === "expired" || oppStatus === "cancelled";
@@ -149,8 +94,24 @@ const OpportunityManagement = () => {
   return (
     <div className="w-full flex flex-col gap-6">
       
-      {/* Domain-specific Opportunity Category Buttons */}
+      {/* Opportunity Category Buttons */}
       <div className="bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl p-3 rounded-2xl flex items-center gap-3 shadow-lg">
+        {/* Drafts & Pending Review */}
+        <button
+          onClick={() => setCategory("draft")}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+            category === "draft"
+              ? "bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg shadow-amber-600/25"
+              : "bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800/80"
+          }`}
+        >
+          <Clock className="w-4 h-4 text-amber-300" />
+          <span>Drafts & Pending Review</span>
+          <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-950/80 text-amber-400 font-extrabold border border-amber-500/30">
+            {getCount("draft")}
+          </span>
+        </button>
+
         {/* Open & Active */}
         <button
           onClick={() => setCategory("open")}
@@ -164,22 +125,6 @@ const OpportunityManagement = () => {
           <span>Open & Active</span>
           <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-950/80 text-emerald-400 font-extrabold border border-emerald-500/30">
             {getCount("open")}
-          </span>
-        </button>
-
-        {/* Drafts & Pending */}
-        <button
-          onClick={() => setCategory("draft")}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            category === "draft"
-              ? "bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-lg shadow-amber-600/25"
-              : "bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800/80"
-          }`}
-        >
-          <Clock className="w-4 h-4 text-amber-300" />
-          <span>Drafts & Pending</span>
-          <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-950/80 text-amber-400 font-extrabold border border-amber-500/30">
-            {getCount("draft")}
           </span>
         </button>
 
@@ -200,7 +145,7 @@ const OpportunityManagement = () => {
         </button>
       </div>
 
-      {/* Search & Action Bar */}
+      {/* Search & Refresh Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
@@ -271,7 +216,7 @@ const OpportunityManagement = () => {
                 </div>
               </div>
 
-              {/* Card Action Controls */}
+              {/* Action Controls */}
               <div className="pt-3 border-t border-slate-800/70 flex items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
                   {category !== "open" && (
@@ -280,7 +225,7 @@ const OpportunityManagement = () => {
                       className="px-3 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-800/60 text-emerald-300 text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
                     >
                       <Check className="w-3.5 h-3.5" />
-                      <span>Publish / Open</span>
+                      <span>Approve & Publish</span>
                     </button>
                   )}
                   {category !== "closed" && (
