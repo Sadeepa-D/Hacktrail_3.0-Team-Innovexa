@@ -170,23 +170,6 @@ const AdminDashboard = () => {
                 <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === "opportunity" ? "translate-x-0.5 text-white" : "text-slate-500"}`} />
               </button>
             </div>
-
-            {/* Quick Link Card */}
-            <div className="bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl rounded-3xl p-5 shadow-xl flex flex-col gap-3">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                Quick Navigation
-              </span>
-              <Link
-                to="/profile"
-                className="flex items-center justify-between text-xs text-slate-300 hover:text-violet-400 p-2.5 rounded-xl hover:bg-slate-800/60 transition-colors"
-              >
-                <span className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-violet-400" />
-                  Personal Profile Page
-                </span>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-500" />
-              </Link>
-            </div>
           </aside>
 
           {/* MIDDLE / RIGHT CONTENT AREA (Dynamically renders the active management component) */}
