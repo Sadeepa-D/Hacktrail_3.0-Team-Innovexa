@@ -45,14 +45,20 @@ const Register = () => {
 
     try {
       setIsSubmitting(true);
-      await register(
+      const res = await register(
         email.trim().toLowerCase(),
         password,
         fname.trim() || undefined,
         lname.trim() || undefined
       );
       toast.success("Account created! Welcome 🎉");
-      navigate("/home", { replace: true });
+
+      // Role-based navigation: ADMIN -> /admindashboard, USER -> /home
+      if (res?.user?.role === "ADMIN") {
+        navigate("/admindashboard", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
     } catch (error) {
       console.error("Registration error:", error);
       toast.error(

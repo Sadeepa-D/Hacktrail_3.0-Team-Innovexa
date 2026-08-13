@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Loader2, User, Sparkles, Briefcase, MapPin, X } from "lucide-react";
+import { Search, Loader2, User, Sparkles, Briefcase, MapPin, X, ShieldCheck } from "lucide-react";
 import logoImage from "../assets/logo.png";
 import { searchUsers } from "../lib/searchApi";
 import { useAuth } from "../context/authcontext";
@@ -241,14 +241,54 @@ const Header = () => {
               {/* Auth Buttons / Controls */}
               {user ? (
                 <div className="flex items-center gap-3">
+                  {user.role === "ADMIN" && (
+                    <Link
+                      to="/admindashboard"
+                      className="px-3 py-1.5 rounded-xl bg-violet-950/80 hover:bg-violet-900/80 text-violet-300 border border-violet-700/60 text-xs font-bold transition-all flex items-center gap-1.5"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      <span>Admin Center</span>
+                    </Link>
+                  )}
                   <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/60">
                     <div className="h-6 w-6 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">
                       {(user.fname || user.email || "U").charAt(0).toUpperCase()}
                     </div>
                     <span className="text-xs font-semibold text-slate-200 truncate max-w-[120px]">
+                  {/* Clickable Top Profile Icon & Badge -> Navigates to /profile */}
+                  <Link
+                    to="/profile"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-violet-950/60 border border-slate-700/60 hover:border-violet-500/50 transition-all group cursor-pointer"
+                    title="Profile Management"
+                  >
+                    {user.avatarUrl ? (
+                      <img
+                        src={user.avatarUrl}
+                        alt="Profile Avatar"
+                        className="h-7 w-7 rounded-full object-cover ring-2 ring-violet-500/50 group-hover:scale-105 transition-transform"
+                      />
+                    ) : (
+                      <div className="h-7 w-7 rounded-full bg-gradient-to-tr from-violet-600 to-indigo-500 flex items-center justify-center text-white text-xs font-bold group-hover:scale-105 transition-transform shadow-md">
+                        {(user.fname || user.email || "U").charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span className="hidden sm:inline text-xs font-semibold text-slate-200 group-hover:text-violet-300 transition-colors truncate max-w-[120px]">
                       {user.fname || user.email?.split("@")[0]}
                     </span>
-                  </div>
+                  </Link>
+
+                  {/* If user is Admin, show Admin Dashboard link */}
+                  {user.role === "ADMIN" && (
+                    <Link
+                      to="/admin"
+                      className="px-3 py-1.5 rounded-xl bg-violet-600/30 hover:bg-violet-600 text-violet-300 hover:text-white border border-violet-500/40 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md"
+                      title="Admin Dashboard"
+                    >
+                      <User className="w-3.5 h-3.5" />
+                      <span className="hidden md:inline">Admin</span>
+                    </Link>
+                  )}
+
                   <button
                     onClick={() => {
                       signOut();
