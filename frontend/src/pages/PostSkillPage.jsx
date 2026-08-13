@@ -131,7 +131,18 @@ const PostSkillPage = () => {
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-10">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        {/* ── Top Left Back Navigation ── */}
+        <div className="mb-6">
+          <button
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-semibold transition-all backdrop-blur-sm shadow-md cursor-pointer group"
+          >
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-violet-400" />
+            <span>Back</span>
+          </button>
+        </div>
+
         {/* ── Page header ── */}
         {view === "list" && (
           <>

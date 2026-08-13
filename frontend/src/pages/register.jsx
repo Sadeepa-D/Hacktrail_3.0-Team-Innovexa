@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/authcontext";
 import {
   Mail, Lock, Eye, EyeOff, UserPlus, Loader2,
-  Sparkles, CheckCircle2, User,
+  Sparkles, CheckCircle2, User, Home
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -71,6 +71,18 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-violet-500 selection:text-white">
+      {/* Top Left Home Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link
+          to="/home"
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800/80 text-slate-300 hover:text-white text-xs font-semibold transition-all backdrop-blur-md shadow-lg cursor-pointer group"
+          title="Return to Home Page"
+        >
+          <Home className="w-4 h-4 text-violet-400 group-hover:scale-110 transition-transform" />
+          <span>Home</span>
+        </Link>
+      </div>
+
       {/* Animated background blobs */}
       <div className="absolute -top-40 -right-40 w-96 h-96 bg-violet-600/25 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-600/25 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: "1s" }} />
