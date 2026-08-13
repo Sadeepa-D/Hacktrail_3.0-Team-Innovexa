@@ -27,9 +27,15 @@ const Login = () => {
 
     try {
       setIsSubmitting(true);
-      await signIn(email.trim().toLowerCase(), password);
+      const res = await signIn(email.trim().toLowerCase(), password);
       toast.success("Welcome back! Login successful.");
-      navigate("/home", { replace: true });
+
+      // Role-based navigation: ADMIN -> /admindashboard, USER -> /home
+      if (res?.user?.role === "ADMIN") {
+        navigate("/admindashboard", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
     } catch (error) {
       toast.error(error.message || "Invalid credentials. Please try again.");
     } finally {
