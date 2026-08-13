@@ -209,9 +209,21 @@ const SkillManagement = () => {
                   <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-950/70 text-violet-300 border border-violet-800/50">
                     {s.category || "OTHER"}
                   </span>
-                  {s.hourlyRate && (
-                    <span className="text-emerald-400 text-xs font-bold">
-                      ${s.hourlyRate}/hr
+                  {(s.hourlyRate != null || s.rateType) && (
+                    <span className="text-emerald-400 text-xs font-bold bg-emerald-950/40 px-2.5 py-0.5 rounded-md border border-emerald-800/40">
+                      {s.rateType === "FREE" || s.hourlyRate === 0
+                        ? "Free Service"
+                        : s.rateType === "NEGOTIABLE"
+                        ? "Negotiable"
+                        : `Rs. ${s.hourlyRate != null ? s.hourlyRate : ""}${
+                            s.rateType === "FIXED"
+                              ? " / Project"
+                              : s.rateType === "DAILY"
+                              ? " / Day"
+                              : s.rateType === "MONTHLY"
+                              ? " / Month"
+                              : " / Hour"
+                          }`}
                     </span>
                   )}
                 </div>
