@@ -8,23 +8,23 @@ const slides = [
   {
     url: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200&auto=format&fit=crop",
     title: "Collaborative Learning",
-    description: "Join teams and grow together."
+    description: "Join teams and grow together.",
   },
   {
     url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop",
     title: "Master Tech Skills",
-    description: "Learn cutting-edge technologies."
+    description: "Learn cutting-edge technologies.",
   },
   {
     url: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&auto=format&fit=crop",
     title: "Career Opportunities",
-    description: "Discover paths that match your passion."
+    description: "Discover paths that match your passion.",
   },
   {
     url: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop",
     title: "Creative Workspaces",
-    description: "Build portfolios that stand out."
-  }
+    description: "Build portfolios that stand out.",
+  },
 ];
 
 const Home = () => {
@@ -57,21 +57,20 @@ const Home = () => {
       {/* Main Content Area */}
       <main className="pt-28 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 min-h-screen flex items-center">
         <div className="w-full grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          
           {/* Left Column: Text & CTAs */}
           <div className="flex flex-col items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
-            
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white tracking-tight mb-6 leading-[1.1]">
               Turn Your Skills <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-indigo-400">
                 Into Opportunities
               </span>
             </h1>
-            
+
             <p className="text-slate-400 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
-              Discover new skills, explore exciting opportunities, and connect with industry professionals on SKILLORA.
+              Discover new skills, explore exciting opportunities, and connect
+              with industry professionals on SKILLORA.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <Link
                 to="/register"
@@ -91,7 +90,6 @@ const Home = () => {
 
           {/* Right Column: Modern Slideshow */}
           <div className="order-1 lg:order-2 relative w-full aspect-square md:aspect-[4/3] lg:aspect-[4/5] xl:aspect-square max-h-[600px] rounded-3xl overflow-hidden border border-slate-800/60 shadow-2xl shadow-violet-900/20 group">
-            
             {/* Images */}
             {slides.map((slide, index) => (
               <div
@@ -108,23 +106,25 @@ const Home = () => {
                     currentSlide === index ? "scale-110" : "scale-100"
                   }`}
                 />
-                
+
                 {/* Text overlay on slide */}
                 <div className="absolute bottom-0 left-0 right-0 p-8 z-20 transform transition-all duration-700 delay-300">
-                  <h3 className="text-2xl font-bold text-white mb-2">{slide.title}</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {slide.title}
+                  </h3>
                   <p className="text-slate-300">{slide.description}</p>
                 </div>
               </div>
             ))}
 
             {/* Navigation Arrows */}
-            <button 
+            <button
               onClick={prevSlide}
               className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <button 
+            <button
               onClick={nextSlide}
               className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/50"
             >
@@ -138,13 +138,14 @@ const Home = () => {
                   key={index}
                   onClick={() => setCurrentSlide(index)}
                   className={`h-1.5 rounded-full transition-all duration-300 ${
-                    currentSlide === index ? "w-6 bg-violet-500" : "w-1.5 bg-white/50 hover:bg-white/80"
+                    currentSlide === index
+                      ? "w-6 bg-violet-500"
+                      : "w-1.5 bg-white/50 hover:bg-white/80"
                   }`}
                 />
               ))}
             </div>
           </div>
-          
         </div>
       </main>
 
