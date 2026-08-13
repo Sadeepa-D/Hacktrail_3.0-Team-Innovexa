@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import {
   Terminal,
   Palette,
@@ -66,14 +67,14 @@ const skillCategories = [
 
 const Skills = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden pb-20">
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden flex flex-col justify-between">
       {/* Dynamic Background Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[40rem] h-[40rem] bg-violet-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
 
       <Header />
 
-      <main className="pt-36 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
+      <main className="pt-36 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10 flex-1">
         <div className="text-center mb-16 opacity-0 animate-fade-in-up">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50 text-violet-300 text-xs font-semibold mb-4 backdrop-blur-sm shadow-sm">
             <span>Browse Categories</span>
@@ -131,6 +132,8 @@ const Skills = () => {
           </div>
         </div>
       </main>
+
+      <Footer />
     </div>
   );
 };

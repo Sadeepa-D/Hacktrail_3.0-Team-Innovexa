@@ -10,7 +10,7 @@ import {
   Check,
   Phone,
   Loader2,
-  RefreshCw
+  RefreshCw,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -40,11 +40,19 @@ const SkillManagement = () => {
 
   const handleVerifySkill = async (skillId, verifyState) => {
     try {
-      await api.put(`/admin/skills/${skillId}/verify`, { isVerified: verifyState });
+      await api.put(`/admin/skills/${skillId}/verify`, {
+        isVerified: verifyState,
+      });
       setSkills((prev) =>
-        prev.map((s) => (s.id === skillId ? { ...s, isVerified: verifyState } : s))
+        prev.map((s) =>
+          s.id === skillId ? { ...s, isVerified: verifyState } : s,
+        ),
       );
-      toast.success(verifyState ? "Skill verified & approved!" : "Verification status updated.");
+      toast.success(
+        verifyState
+          ? "Skill verified & approved!"
+          : "Verification status updated.",
+      );
     } catch (err) {
       console.error("Verify skill error:", err);
       toast.error("Failed to update skill verification.");
@@ -55,7 +63,9 @@ const SkillManagement = () => {
     try {
       await api.patch(`/admin/skills/${skillId}/toggle`);
       setSkills((prev) =>
-        prev.map((s) => (s.id === skillId ? { ...s, isActive: !s.isActive } : s))
+        prev.map((s) =>
+          s.id === skillId ? { ...s, isActive: !s.isActive } : s,
+        ),
       );
       toast.success("Skill active status updated.");
     } catch (err) {
@@ -65,7 +75,8 @@ const SkillManagement = () => {
   };
 
   const handleDeleteSkill = async (skillId) => {
-    if (!window.confirm("Are you sure you want to delete this skill listing?")) return;
+    if (!window.confirm("Are you sure you want to delete this skill listing?"))
+      return;
     try {
       await api.delete(`/admin/skills/${skillId}`);
       setSkills((prev) => prev.filter((s) => s.id !== skillId));
@@ -77,21 +88,30 @@ const SkillManagement = () => {
   };
 
   const filteredSkills = skills.filter((s) => {
-    let skillCat = !s.isActive ? "inactive" : s.isVerified ? "verified" : "pending";
+    let skillCat = !s.isActive
+      ? "inactive"
+      : s.isVerified
+        ? "verified"
+        : "pending";
     const matchesCategory = skillCat === category;
-    const matchesSearch = s.name?.toLowerCase().includes(searchQuery.toLowerCase()) || s.category?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch =
+      s.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      s.category?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   const getCount = (catKey) =>
     skills.filter((s) => {
-      let skillCat = !s.isActive ? "inactive" : s.isVerified ? "verified" : "pending";
+      let skillCat = !s.isActive
+        ? "inactive"
+        : s.isVerified
+          ? "verified"
+          : "pending";
       return skillCat === catKey;
     }).length;
 
   return (
     <div className="w-full flex flex-col gap-6">
-      
       {/* Skill Category Buttons */}
       <div className="bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl p-3 rounded-2xl flex items-center gap-3 shadow-lg">
         <button
@@ -170,7 +190,9 @@ const SkillManagement = () => {
       ) : filteredSkills.length === 0 ? (
         <div className="py-16 text-center border border-dashed border-slate-800 rounded-3xl p-8 bg-slate-900/40">
           <Sparkles className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-          <h3 className="text-base font-semibold text-slate-300">No {category.toUpperCase()} Skills Found</h3>
+          <h3 className="text-base font-semibold text-slate-300">
+            No {category.toUpperCase()} Skills Found
+          </h3>
           <p className="text-slate-500 text-xs max-w-sm mx-auto mt-1">
             There are currently no skill listings under the "{category}" status.
           </p>
@@ -188,18 +210,28 @@ const SkillManagement = () => {
                     {s.category || "OTHER"}
                   </span>
                   {s.hourlyRate && (
-                    <span className="text-emerald-400 text-xs font-bold">${s.hourlyRate}/hr</span>
+                    <span className="text-emerald-400 text-xs font-bold">
+                      ${s.hourlyRate}/hr
+                    </span>
                   )}
                 </div>
                 <h4 className="text-base font-bold text-white flex items-center gap-2">
                   {s.name}
                   {s.isVerified && (
-                    <ShieldCheck className="w-4 h-4 text-emerald-400" title="Verified Skill" />
+                    <ShieldCheck
+                      className="w-4 h-4 text-emerald-400"
+                      title="Verified Skill"
+                    />
                   )}
                 </h4>
-                <p className="text-xs text-slate-400 line-clamp-2">{s.description || "No description."}</p>
+                <p className="text-xs text-slate-400 line-clamp-2">
+                  {s.description || "No description."}
+                </p>
                 <div className="flex items-center gap-3 text-xs text-slate-500 pt-1">
-                  <span className="flex items-center gap-1"><Phone className="w-3 h-3 text-slate-400" />{s.phonenum}</span>
+                  <span className="flex items-center gap-1">
+                    <Phone className="w-3 h-3 text-slate-400" />
+                    {s.phonenum}
+                  </span>
                 </div>
               </div>
 

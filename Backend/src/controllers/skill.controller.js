@@ -31,11 +31,12 @@ const SKILL_PUBLIC_SELECT = {
 };
 
 const buildSkillFilters = (query) => {
-  const { category, search, isActive } = query;
+  const { category, search, isActive, isVerified } = query;
   const where = {};
 
   if (category) where.category = category.toUpperCase();
   if (isActive !== undefined) where.isActive = isActive === "true";
+  if (isVerified !== undefined) where.isVerified = isVerified === "true";
   if (search) {
     where.OR = [
       { name: { contains: search, mode: "insensitive" } },
@@ -66,7 +67,9 @@ const skillController = {
       } = req.body;
 
       if (!name || !phonenum) {
-        return res.status(400).json({ error: "Skill name and phone number are required." });
+        return res
+          .status(400)
+          .json({ error: "Skill name and phone number are required." });
       }
 
       const skill = await prisma.skill.create({
@@ -91,11 +94,13 @@ const skillController = {
       });
     } catch (error) {
       console.error("Create Skill Error:", error);
-      return res.status(500).json({ error: "Failed to create skill.", details: error.message });
+      return res
+        .status(500)
+        .json({ error: "Failed to create skill.", details: error.message });
     }
   },
 
-  // ── GET /skills ── List all active skills (public feed)
+  // ── GET /skills ── List all active & verified skills (public feed)
   getAllSkills: async (req, res) => {
     try {
       const page = Math.max(1, parseInt(req.query.page) || 1);
@@ -106,6 +111,7 @@ const skillController = {
 
       const where = {
         isActive: true,
+        isVerified: true, // Only show verified skills in public feed
         ...buildSkillFilters(req.query),
       };
 
@@ -212,7 +218,9 @@ const skillController = {
       const existing = await prisma.skill.findUnique({ where: { id } });
       if (!existing) return res.status(404).json({ error: "Skill not found." });
       if (existing.userId !== req.user.id) {
-        return res.status(403).json({ error: "You are not authorized to edit this skill." });
+        return res
+          .status(403)
+          .json({ error: "You are not authorized to edit this skill." });
       }
 
       const {
@@ -233,11 +241,16 @@ const skillController = {
       if (phonenum !== undefined) updateData.phonenum = phonenum.trim();
       if (email !== undefined) updateData.email = email?.trim() || null;
       if (category !== undefined) updateData.category = category;
-      if (description !== undefined) updateData.description = description?.trim() || null;
-      if (qualification !== undefined) updateData.qualification = qualification?.trim() || null;
-      if (hourlyRate !== undefined) updateData.hourlyRate = hourlyRate ? parseFloat(hourlyRate) : null;
-      if (availability !== undefined) updateData.availability = availability?.trim() || null;
-      if (experience !== undefined) updateData.experience = experience?.trim() || null;
+      if (description !== undefined)
+        updateData.description = description?.trim() || null;
+      if (qualification !== undefined)
+        updateData.qualification = qualification?.trim() || null;
+      if (hourlyRate !== undefined)
+        updateData.hourlyRate = hourlyRate ? parseFloat(hourlyRate) : null;
+      if (availability !== undefined)
+        updateData.availability = availability?.trim() || null;
+      if (experience !== undefined)
+        updateData.experience = experience?.trim() || null;
       if (isActive !== undefined) updateData.isActive = Boolean(isActive);
 
       const skill = await prisma.skill.update({
@@ -252,7 +265,9 @@ const skillController = {
       });
     } catch (error) {
       console.error("Update Skill Error:", error);
-      return res.status(500).json({ error: "Failed to update skill.", details: error.message });
+      return res
+        .status(500)
+        .json({ error: "Failed to update skill.", details: error.message });
     }
   },
 
@@ -264,7 +279,9 @@ const skillController = {
       const existing = await prisma.skill.findUnique({ where: { id } });
       if (!existing) return res.status(404).json({ error: "Skill not found." });
       if (existing.userId !== req.user.id) {
-        return res.status(403).json({ error: "You are not authorized to delete this skill." });
+        return res
+          .status(403)
+          .json({ error: "You are not authorized to delete this skill." });
       }
 
       await prisma.skill.delete({ where: { id } });
