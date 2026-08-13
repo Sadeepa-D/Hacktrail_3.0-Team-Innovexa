@@ -220,9 +220,21 @@ const SkillCategoryDetail = () => {
                         </span>
                       </div>
 
-                      {skill.hourlyRate != null && (
+                      {(skill.hourlyRate != null || skill.rateType) && (
                         <span className="text-xs font-bold text-emerald-400 shrink-0">
-                          ${skill.hourlyRate}/hr
+                          {skill.rateType === "FREE" || skill.hourlyRate === 0
+                            ? "Free"
+                            : skill.rateType === "NEGOTIABLE"
+                            ? "Negotiable"
+                            : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
+                                skill.rateType === "FIXED"
+                                  ? " / Project"
+                                  : skill.rateType === "DAILY"
+                                  ? " / Day"
+                                  : skill.rateType === "MONTHLY"
+                                  ? " / Month"
+                                  : " / Hour"
+                              }`}
                         </span>
                       )}
                     </div>
