@@ -34,10 +34,10 @@ export const SKILL_CATEGORIES = [
 ];
 
 export const PRICING_TYPES = [
-  { value: "HOURLY", label: "Hourly Rate ($/hr)", icon: "⏱️", placeholder: "e.g. 45.00" },
-  { value: "FIXED", label: "Fixed Price ($/project)", icon: "💼", placeholder: "e.g. 250.00" },
-  { value: "DAILY", label: "Daily Rate ($/day)", icon: "📅", placeholder: "e.g. 150.00" },
-  { value: "MONTHLY", label: "Monthly Rate ($/mo)", icon: "🗓️", placeholder: "e.g. 1200.00" },
+  { value: "HOURLY", label: "Hourly Rate (Rs. / Hour)", icon: "⏱️", placeholder: "e.g. 1500.00" },
+  { value: "FIXED", label: "Fixed Price (Rs. / Project)", icon: "💼", placeholder: "e.g. 25000.00" },
+  { value: "DAILY", label: "Daily Rate (Rs. / Day)", icon: "📅", placeholder: "e.g. 5000.00" },
+  { value: "MONTHLY", label: "Monthly Rate (Rs. / Month)", icon: "🗓️", placeholder: "e.g. 80000.00" },
   { value: "FREE", label: "Free / Voluntary Service", icon: "🎁", placeholder: "Free (0.00)" },
   { value: "NEGOTIABLE", label: "Negotiable / Barter", icon: "🤝", placeholder: "Negotiable" },
 ];
@@ -388,7 +388,7 @@ const SkillForm = ({
             {/* Amount Input */}
             <div className="flex flex-col gap-2">
               <label htmlFor="skill-rate-amount" className="text-xs font-medium text-slate-300">
-                Amount ($) {formData.rateType === "FREE" && "(Free Service)"}
+                Amount (Rs.) {formData.rateType === "FREE" && "(Free Service)"}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">

@@ -226,14 +226,14 @@ const SkillCategoryDetail = () => {
                             ? "Free"
                             : skill.rateType === "NEGOTIABLE"
                             ? "Negotiable"
-                            : `${skill.hourlyRate != null ? `$${skill.hourlyRate}` : ""}${
+                            : `Rs. ${skill.hourlyRate != null ? skill.hourlyRate : ""}${
                                 skill.rateType === "FIXED"
-                                  ? "/project"
+                                  ? " / Project"
                                   : skill.rateType === "DAILY"
-                                  ? "/day"
+                                  ? " / Day"
                                   : skill.rateType === "MONTHLY"
-                                  ? "/mo"
-                                  : "/hr"
+                                  ? " / Month"
+                                  : " / Hour"
                               }`}
                         </span>
                       )}
